@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced PRM Question Paper Generator - প্রফেশনাল প্রশ্নপত্র তৈরি সফ্টওয়্যার</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -55,23 +51,6 @@
             margin-bottom: 30px;
             position: relative;
             overflow: hidden;
-        }
-
-        .main-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: float 20s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(-50px, -50px) rotate(360deg); }
         }
 
         .header-content {
@@ -191,24 +170,6 @@
             gap: 8px;
         }
 
-        .input-with-icon {
-            position: relative;
-        }
-
-        .input-with-icon i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-        }
-
-        .input-with-icon textarea,
-        .input-with-icon input,
-        .input-with-icon select {
-            padding-left: 45px;
-        }
-
         textarea, input, select {
             width: 100%;
             padding: 14px;
@@ -266,31 +227,6 @@
         .type-option.active {
             border-color: var(--success-color);
             background: rgba(39, 174, 96, 0.1);
-        }
-
-        /* Options Grid */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .option-input {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .option-input input[type="radio"],
-        .option-input input[type="checkbox"] {
-            width: auto;
         }
 
         /* Button Styles */
@@ -359,12 +295,7 @@
             flex: 1;
             overflow-y: auto;
             padding: 20px;
-            background: linear-gradient(45deg, #f8f9fa 25%, transparent 25%),
-                        linear-gradient(-45deg, #f8f9fa 25%, transparent 25%),
-                        linear-gradient(45deg, transparent 75%, #f8f9fa 75%),
-                        linear-gradient(-45deg, transparent 75%, #f8f9fa 75%);
-            background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            background: white;
         }
 
         /* PDF Header */
@@ -423,11 +354,6 @@
             transition: transform 0.3s ease;
         }
 
-        .question-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-        }
-
         .question-number {
             position: absolute;
             left: -15px;
@@ -471,46 +397,6 @@
             border-top: 1px dashed #e0e0e0;
             font-size: 14px;
             color: #666;
-        }
-
-        /* MCQ Options */
-        .mcq-options {
-            padding-left: 25px;
-            margin: 15px 0;
-        }
-
-        .mcq-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            padding: 8px 12px;
-            background: var(--light-bg);
-            border-radius: 6px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .mcq-option.correct {
-            background: rgba(39, 174, 96, 0.1);
-            border-color: var(--success-color);
-        }
-
-        .option-label {
-            font-weight: 600;
-            color: var(--primary-color);
-            min-width: 30px;
-        }
-
-        /* Marks Section */
-        .marks-section {
-            display: inline-block;
-            background: var(--warning-color);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-left: 10px;
         }
 
         /* Toolbar */
@@ -562,24 +448,6 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border-top: 3px solid var(--secondary-color);
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .footer-link {
-            color: var(--secondary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-link:hover {
-            color: var(--primary-color);
-            text-decoration: underline;
         }
 
         /* Modal Styles */
@@ -634,26 +502,6 @@
             }
         }
 
-        /* Animation Classes */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .shake {
-            animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
@@ -667,10 +515,6 @@
         ::-webkit-scrollbar-thumb {
             background: var(--secondary-color);
             border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color);
         }
 
         /* Loading Spinner */
@@ -703,11 +547,6 @@
         .badge-primary {
             background: rgba(52, 152, 219, 0.2);
             color: var(--accent-color);
-        }
-
-        .badge-success {
-            background: rgba(39, 174, 96, 0.2);
-            color: var(--success-color);
         }
 
         .badge-warning {
@@ -804,92 +643,109 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* Template Gallery */
-        .template-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .template-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .template-card:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-5px);
-        }
-
-        .template-card.active {
-            border-color: var(--success-color);
-            background: rgba(39, 174, 96, 0.05);
-        }
-
-        /* Import/Export Section */
-        .import-export {
-            background: var(--light-bg);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .file-label {
-            display: inline-block;
-            padding: 12px 25px;
-            background: white;
-            border: 2px dashed var(--accent-color);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            width: 100%;
-        }
-
-        .file-label:hover {
-            background: rgba(52, 152, 219, 0.1);
-        }
-
         /* Print Styles */
         @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            #printable-content, #printable-content * {
+                visibility: visible;
+            }
+            
+            #printable-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+            }
+            
             .no-print {
                 display: none !important;
             }
-
-            body {
-                background: white !important;
-            }
-
+            
             .question-card {
                 box-shadow: none !important;
                 border: 1px solid #ddd !important;
                 break-inside: avoid;
+                page-break-inside: avoid;
             }
         }
 
-        /* Watermark */
-        .watermark {
-            position: absolute;
-            opacity: 0.1;
-            font-size: 80px;
-            transform: rotate(-45deg);
-            pointer-events: none;
-            z-index: 1;
+        /* Marks Section */
+        .marks-section {
+            display: inline-block;
+            background: var(--warning-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        /* MCQ Options */
+        .mcq-options {
+            padding-left: 25px;
+            margin: 15px 0;
+        }
+
+        .mcq-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background: var(--light-bg);
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .mcq-option.correct {
+            background: rgba(39, 174, 96, 0.1);
+            border-color: var(--success-color);
+        }
+
+        .option-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 30px;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-input input[type="radio"],
+        .option-input input[type="checkbox"] {
+            width: auto;
         }
     </style>
 </head>
 <body>
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
+
+    <!-- Printable Content (Hidden by default) -->
+    <div id="printable-content" style="display: none;"></div>
 
     <!-- Main Container -->
     <div class="container">
@@ -900,7 +756,7 @@
                     <i class="fas fa-file-pdf fa-2x"></i>
                     <span>Advanced PRM Question Paper Generator</span>
                 </h1>
-                <p class="header-subtitle">পেশাদার মানের প্রশ্নপত্র তৈরি করুন, কাস্টমাইজ করুন এবং PDF হিসেবে ডাউনলোড করুন। ২০+ টি ফিচার সহ সম্পূর্ণ বাংলা ইন্টারফেস।</p>
+                <p class="header-subtitle">পেশাদার মানের প্রশ্নপত্র তৈরি করুন, কাস্টমাইজ করুন এবং PDF হিসেবে ডাউনলোড করুন।</p>
             </div>
         </header>
 
@@ -933,19 +789,12 @@
                         <i class="fas fa-edit"></i>
                         প্রশ্ন ও উত্তর ইনপুট
                     </h2>
-                    <div class="btn-group">
-                        <button class="btn btn-success" id="saveTemplateBtn">
-                            <i class="fas fa-save"></i> টেমপ্লেট সেভ
-                        </button>
-                    </div>
                 </div>
                 <div class="panel-content">
                     <!-- Tab Navigation -->
                     <div class="tab-navigation">
                         <button class="tab-btn active" data-tab="single">একক প্রশ্ন</button>
-                        <button class="tab-btn" data-tab="bulk">বাল্ক যোগ</button>
                         <button class="tab-btn" data-tab="mcq">MCQ প্রশ্ন</button>
-                        <button class="tab-btn" data-tab="import">ইমপোর্ট</button>
                     </div>
 
                     <!-- Single Question Tab -->
@@ -968,10 +817,6 @@
                                     <i class="fas fa-brain"></i>
                                     বিশ্লেষণাত্মক
                                 </div>
-                                <div class="type-option" data-type="practical">
-                                    <i class="fas fa-flask"></i>
-                                    ব্যবহারিক
-                                </div>
                             </div>
                         </div>
 
@@ -980,10 +825,7 @@
                                 <i class="fas fa-question-circle"></i>
                                 প্রশ্ন
                             </label>
-                            <div class="input-with-icon">
-                                <i class="fas fa-question"></i>
-                                <textarea id="question" placeholder="আপনার প্রশ্নটি বিস্তারিতভাবে লিখুন..."></textarea>
-                            </div>
+                            <textarea id="question" placeholder="আপনার প্রশ্নটি বিস্তারিতভাবে লিখুন..."></textarea>
                             <div class="char-count">
                                 <span id="questionChars">0</span> / 1000 অক্ষর
                             </div>
@@ -994,10 +836,7 @@
                                 <i class="fas fa-comment-dots"></i>
                                 উত্তর
                             </label>
-                            <div class="input-with-icon">
-                                <i class="fas fa-pen"></i>
-                                <textarea id="answer" placeholder="সম্পূর্ণ উত্তরটি লিখুন..."></textarea>
-                            </div>
+                            <textarea id="answer" placeholder="সম্পূর্ণ উত্তরটি লিখুন..."></textarea>
                             <div class="char-count">
                                 <span id="answerChars">0</span> / 2000 অক্ষর
                             </div>
@@ -1008,7 +847,7 @@
                                 <i class="fas fa-star"></i>
                                 নম্বর
                             </label>
-                            <input type="number" id="marks" min="1" max="100" value="10" class="input-with-icon">
+                            <input type="number" id="marks" min="1" max="100" value="10">
                         </div>
 
                         <div class="form-group">
@@ -1016,7 +855,7 @@
                                 <i class="fas fa-chart-line"></i>
                                 কঠিনতা
                             </label>
-                            <select id="difficulty" class="input-with-icon">
+                            <select id="difficulty">
                                 <option value="easy">সহজ</option>
                                 <option value="medium">মধ্যম</option>
                                 <option value="hard">কঠিন</option>
@@ -1029,14 +868,12 @@
                                 <i class="fas fa-folder"></i>
                                 বিষয়শ্রেণী
                             </label>
-                            <select id="category" class="input-with-icon">
+                            <select id="category">
                                 <option value="general">সাধারণ</option>
                                 <option value="math">গণিত</option>
                                 <option value="science">বিজ্ঞান</option>
                                 <option value="english">ইংরেজি</option>
                                 <option value="bangla">বাংলা</option>
-                                <option value="history">ইতিহাস</option>
-                                <option value="geography">ভূগোল</option>
                             </select>
                         </div>
 
@@ -1044,35 +881,8 @@
                             <button id="addBtn" class="btn btn-primary">
                                 <i class="fas fa-plus-circle"></i> প্রশ্ন যোগ করুন
                             </button>
-                            <button id="previewBtn" class="btn btn-warning">
-                                <i class="fas fa-eye"></i> প্রিভিউ দেখুন
-                            </button>
                             <button id="clearCurrentBtn" class="btn btn-secondary">
                                 <i class="fas fa-eraser"></i> মুছুন
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Bulk Upload Tab -->
-                    <div id="bulk-tab" class="tab-content" style="display: none;">
-                        <div class="form-group">
-                            <label>
-                                <i class="fas fa-upload"></i>
-                                একসাথে একাধিক প্রশ্ন যোগ করুন
-                            </label>
-                            <textarea id="bulkInput" placeholder="প্রশ্ন এবং উত্তর নিচের ফরম্যাটে লিখুন:
-
-প্রশ্ন ১: আপনার প্রথম প্রশ্ন?
-উত্তর: প্রথম প্রশ্নের উত্তর।
-
-প্রশ্ন ২: আপনার দ্বিতীয় প্রশ্ন?
-উত্তর: দ্বিতীয় প্রশ্নের উত্তর।
-
-প্রতিটি প্রশ্ন-উত্তর জোড়ার মাঝে একটি ফাঁকা লাইন রাখুন।" rows="15"></textarea>
-                        </div>
-                        <div class="button-group">
-                            <button id="processBulkBtn" class="btn btn-success">
-                                <i class="fas fa-cogs"></i> প্রক্রিয়া করুন
                             </button>
                         </div>
                     </div>
@@ -1120,50 +930,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="mcqExplanation">
-                                <i class="fas fa-lightbulb"></i>
-                                ব্যাখ্যা (ঐচ্ছিক)
-                            </label>
-                            <textarea id="mcqExplanation" placeholder="উত্তরের ব্যাখ্যা..."></textarea>
-                        </div>
-
                         <div class="button-group">
                             <button id="addMcqBtn" class="btn btn-primary">
                                 <i class="fas fa-plus-circle"></i> MCQ যোগ করুন
                             </button>
-                        </div>
-                    </div>
-
-                    <!-- Import Tab -->
-                    <div id="import-tab" class="tab-content" style="display: none;">
-                        <div class="import-export">
-                            <div class="form-group">
-                                <label>
-                                    <i class="fas fa-file-import"></i>
-                                    ফাইল থেকে ইমপোর্ট করুন
-                                </label>
-                                <input type="file" id="importFile" class="file-input" accept=".json,.txt,.csv">
-                                <label for="importFile" class="file-label">
-                                    <i class="fas fa-cloud-upload-alt fa-2x"></i><br>
-                                    JSON, TXT বা CSV ফাইল আপলোড করুন
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label>
-                                    <i class="fas fa-file-export"></i>
-                                    এক্সপোর্ড করুন
-                                </label>
-                                <div class="button-group">
-                                    <button id="exportJsonBtn" class="btn btn-success">
-                                        <i class="fas fa-download"></i> JSON হিসেবে
-                                    </button>
-                                    <button id="exportCsvBtn" class="btn btn-warning">
-                                        <i class="fas fa-table"></i> CSV হিসেবে
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1249,7 +1019,6 @@
                         <div class="color-option" style="background: #27ae60;" data-color="green"></div>
                         <div class="color-option" style="background: #e74c3c;" data-color="red"></div>
                         <div class="color-option" style="background: #9b59b6;" data-color="purple"></div>
-                        <div class="color-option" style="background: #34495e;" data-color="dark"></div>
                     </div>
                 </div>
 
@@ -1262,7 +1031,6 @@
                         <option value="small">ছোট</option>
                         <option value="medium" selected>মধ্যম</option>
                         <option value="large">বড়</option>
-                        <option value="xlarge">অতিবড়</option>
                     </select>
                 </div>
 
@@ -1281,85 +1049,13 @@
                     </span>
                     <input type="text" id="footerText" placeholder="© PRM Education Board" maxlength="100">
                 </div>
-
-                <div class="setting-item">
-                    <span>
-                        <i class="fas fa-language"></i>
-                        ভাষা
-                    </span>
-                    <select id="language">
-                        <option value="bn" selected>বাংলা</option>
-                        <option value="en">ইংরেজি</option>
-                        <option value="bn-en">দ্বিভাষিক</option>
-                    </select>
-                </div>
-
-                <div class="setting-item">
-                    <span>
-                        <i class="fas fa-columns"></i>
-                        কোলাম লেআউট
-                    </span>
-                    <select id="layout">
-                        <option value="single">একক কলাম</option>
-                        <option value="two-column" selected>দুই কলাম</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Template Gallery -->
-        <div class="settings-panel">
-            <h3 class="panel-title">
-                <i class="fas fa-layer-group"></i>
-                প্রি-ডিজাইনড টেমপ্লেট
-            </h3>
-            
-            <div class="template-gallery">
-                <div class="template-card" data-template="default">
-                    <i class="fas fa-file-alt fa-3x" style="color: #4a6491;"></i>
-                    <h4>সাধারণ টেমপ্লেট</h4>
-                    <p>বেসিক ডিজাইনের প্রশ্নপত্র</p>
-                </div>
-
-                <div class="template-card" data-template="modern">
-                    <i class="fas fa-rocket fa-3x" style="color: #3498db;"></i>
-                    <h4>মডার্ন টেমপ্লেট</h4>
-                    <p>আধুনিক ডিজাইনের প্রশ্নপত্র</p>
-                </div>
-
-                <div class="template-card" data-template="academic">
-                    <i class="fas fa-university fa-3x" style="color: #27ae60;"></i>
-                    <h4>একাডেমিক টেমপ্লেট</h4>
-                    <p>প্রাতিষ্ঠানিক প্রশ্নপত্র</p>
-                </div>
-
-                <div class="template-card" data-template="minimal">
-                    <i class="fas fa-minimize fa-3x" style="color: #e74c3c;"></i>
-                    <h4>মিনিমাল টেমপ্লেট</h4>
-                    <p>সহজ ও পরিষ্কার ডিজাইন</p>
-                </div>
             </div>
         </div>
 
         <!-- Footer -->
         <footer class="main-footer">
-            <p>© 2024 Advanced PRM Question Paper Generator. সর্বস্বত্ব সংরক্ষিত।</p>
+            <p>© 2024 PRM Question Paper Generator. সর্বস্বত্ব সংরক্ষিত।</p>
             <p>প্রশ্নপত্র তৈরি, ব্যবস্থাপনা এবং ডাউনলোডের জন্য পূর্ণাঙ্গ সমাধান।</p>
-            
-            <div class="footer-links">
-                <a href="#" class="footer-link">
-                    <i class="fas fa-question-circle"></i> সাহায্য
-                </a>
-                <a href="#" class="footer-link">
-                    <i class="fas fa-book"></i> ডকুমেন্টেশন
-                </a>
-                <a href="#" class="footer-link">
-                    <i class="fas fa-envelope"></i> যোগাযোগ
-                </a>
-                <a href="#" class="footer-link">
-                    <i class="fas fa-shield-alt"></i> গোপনীয়তা নীতি
-                </a>
-            </div>
         </footer>
     </div>
 
@@ -1371,28 +1067,6 @@
             <div class="progress-bar" style="margin-top: 20px;">
                 <div class="progress-fill" id="progressFill" style="width: 0%"></div>
             </div>
-        </div>
-    </div>
-
-    <!-- Error Modal -->
-    <div id="errorModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3><i class="fas fa-exclamation-triangle text-danger"></i> ত্রুটি!</h3>
-            <p id="errorMessage">একটি সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।</p>
-            <button class="btn btn-primary" onclick="document.getElementById('errorModal').style.display='none'">
-                ঠিক আছে
-            </button>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div id="successModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3><i class="fas fa-check-circle text-success"></i> সফল!</h3>
-            <p id="successMessage">অপারেশন সফলভাবে সম্পন্ন হয়েছে।</p>
-            <button class="btn btn-primary" onclick="document.getElementById('successModal').style.display='none'">
-                ঠিক আছে
-            </button>
         </div>
     </div>
 
@@ -1408,41 +1082,17 @@
         </div>
     </div>
 
-    <!-- Template Save Modal -->
-    <div id="templateModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3><i class="fas fa-save"></i> টেমপ্লেট সেভ করুন</h3>
-            <div class="form-group">
-                <label for="templateName">টেমপ্লেট নাম</label>
-                <input type="text" id="templateName" placeholder="আপনার টেমপ্লেটের নাম লিখুন" class="input-with-icon">
-            </div>
-            <div class="form-group">
-                <label for="templateDescription">বর্ণনা</label>
-                <textarea id="templateDescription" placeholder="টেমপ্লেটের সংক্ষিপ্ত বর্ণনা" rows="3"></textarea>
-            </div>
-            <div class="button-group" style="margin-top: 20px;">
-                <button class="btn btn-success" id="saveTemplateConfirm">সেভ করুন</button>
-                <button class="btn btn-secondary" onclick="document.getElementById('templateModal').style.display='none'">
-                    বাতিল করুন
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script -->
     <script>
         // Main Application Object
         const PRMGenerator = {
             // Configuration
             config: {
-                appName: "Advanced PRM Question Paper Generator",
-                version: "2.0.0",
+                appName: "PRM Question Paper Generator",
+                version: "1.0.0",
                 maxQuestions: 100,
                 maxMarks: 1000,
                 headerImage: "https://i.ibb.co/PscWrB5k/1000001232.png",
                 defaultPDFName: "PRM Question Paper.pdf",
-                autoSaveInterval: 30000, // 30 seconds
-                maxFileSize: 10 * 1024 * 1024, // 10MB
             },
 
             // State Management
@@ -1454,22 +1104,12 @@
                     fontSize: 'medium',
                     watermark: '',
                     footerText: '',
-                    language: 'bn',
-                    layout: 'two-column',
-                    template: 'default',
-                    showMarks: true,
-                    showDifficulty: true,
-                    showCategory: true,
-                    pageNumbers: true,
-                    headerImage: true,
                 },
-                templates: {},
                 statistics: {
                     totalQuestions: 0,
                     totalMarks: 0,
                     totalTime: 60,
                     difficultyLevel: 'easy',
-                    categories: {},
                 },
                 editorState: {
                     currentTab: 'single',
@@ -1478,7 +1118,6 @@
                         question: 0,
                         answer: 0,
                     },
-                    lastSaved: null,
                 }
             },
 
@@ -1489,7 +1128,6 @@
                 this.loadFromLocalStorage();
                 this.updateStatistics();
                 this.renderQuestions();
-                this.startAutoSave();
                 this.showToast('অ্যাপ্লিকেশন সফলভাবে শুরু হয়েছে!', 'success');
             },
 
@@ -1502,28 +1140,21 @@
                     marksInput: document.getElementById('marks'),
                     difficultySelect: document.getElementById('difficulty'),
                     categorySelect: document.getElementById('category'),
-                    bulkInput: document.getElementById('bulkInput'),
                     mcqQuestion: document.getElementById('mcqQuestion'),
                     optionA: document.getElementById('optionA'),
                     optionB: document.getElementById('optionB'),
                     optionC: document.getElementById('optionC'),
                     optionD: document.getElementById('optionD'),
-                    mcqExplanation: document.getElementById('mcqExplanation'),
 
                     // Buttons
                     addBtn: document.getElementById('addBtn'),
-                    previewBtn: document.getElementById('previewBtn'),
                     clearCurrentBtn: document.getElementById('clearCurrentBtn'),
-                    processBulkBtn: document.getElementById('processBulkBtn'),
                     addMcqBtn: document.getElementById('addMcqBtn'),
                     downloadPdfBtn: document.getElementById('downloadPdfBtn'),
                     downloadImageBtn: document.getElementById('downloadImageBtn'),
                     printBtn: document.getElementById('printBtn'),
                     clearAllBtn: document.getElementById('clearAllBtn'),
                     refreshPreviewBtn: document.getElementById('refreshPreviewBtn'),
-                    saveTemplateBtn: document.getElementById('saveTemplateBtn'),
-                    exportJsonBtn: document.getElementById('exportJsonBtn'),
-                    exportCsvBtn: document.getElementById('exportCsvBtn'),
 
                     // Preview elements
                     questionsContainer: document.getElementById('questionsContainer'),
@@ -1541,8 +1172,6 @@
                     fontSize: document.getElementById('fontSize'),
                     watermarkText: document.getElementById('watermarkText'),
                     footerText: document.getElementById('footerText'),
-                    language: document.getElementById('language'),
-                    layout: document.getElementById('layout'),
 
                     // Character counters
                     questionChars: document.getElementById('questionChars'),
@@ -1569,14 +1198,8 @@
                 // Add question button
                 this.elements.addBtn.addEventListener('click', () => this.addQuestion());
 
-                // Preview button
-                this.elements.previewBtn.addEventListener('click', () => this.renderQuestions());
-
                 // Clear current button
                 this.elements.clearCurrentBtn.addEventListener('click', () => this.clearCurrentInput());
-
-                // Process bulk input
-                this.elements.processBulkBtn.addEventListener('click', () => this.processBulkInput());
 
                 // Add MCQ button
                 this.elements.addMcqBtn.addEventListener('click', () => this.addMCQQuestion());
@@ -1584,7 +1207,7 @@
                 // Download buttons
                 this.elements.downloadPdfBtn.addEventListener('click', () => this.downloadPDF());
                 this.elements.downloadImageBtn.addEventListener('click', () => this.downloadImage());
-                this.elements.printBtn.addEventListener('click', () => window.print());
+                this.elements.printBtn.addEventListener('click', () => this.printPaper());
                 this.elements.clearAllBtn.addEventListener('click', () => this.clearAllQuestions());
 
                 // Refresh preview
@@ -1592,13 +1215,6 @@
                     this.renderQuestions();
                     this.showToast('প্রিভিউ রিফ্রেশ করা হয়েছে', 'info');
                 });
-
-                // Save template
-                this.elements.saveTemplateBtn.addEventListener('click', () => this.openTemplateModal());
-
-                // Export buttons
-                this.elements.exportJsonBtn.addEventListener('click', () => this.exportJSON());
-                this.elements.exportCsvBtn.addEventListener('click', () => this.exportCSV());
 
                 // Settings changes
                 this.elements.fontSize.addEventListener('change', (e) => {
@@ -1612,16 +1228,6 @@
 
                 this.elements.footerText.addEventListener('input', (e) => {
                     this.state.settings.footerText = e.target.value;
-                });
-
-                this.elements.language.addEventListener('change', (e) => {
-                    this.state.settings.language = e.target.value;
-                    this.renderQuestions();
-                });
-
-                this.elements.layout.addEventListener('change', (e) => {
-                    this.state.settings.layout = e.target.value;
-                    this.applySettings();
                 });
 
                 // Tab navigation
@@ -1655,43 +1261,16 @@
                     });
                 });
 
-                // Template selection
-                document.querySelectorAll('.template-card').forEach(card => {
-                    card.addEventListener('click', (e) => {
-                        document.querySelectorAll('.template-card').forEach(c => {
-                            c.classList.remove('active');
-                        });
-                        e.target.closest('.template-card').classList.add('active');
-                        this.state.settings.template = e.target.closest('.template-card').dataset.template;
-                        this.applySettings();
-                        this.showToast('টেমপ্লেট প্রয়োগ করা হয়েছে', 'success');
-                    });
-                });
-
-                // File import
-                document.getElementById('importFile').addEventListener('change', (e) => {
-                    this.importFile(e.target.files[0]);
-                });
-
                 // Keyboard shortcuts
                 document.addEventListener('keydown', (e) => {
-                    // Ctrl + S to save
-                    if (e.ctrlKey && e.key === 's') {
-                        e.preventDefault();
-                        this.saveToLocalStorage();
-                        this.showToast('স্বয়ংক্রিয়ভাবে সেভ করা হয়েছে', 'info');
-                    }
-
                     // Ctrl + Enter to add question
                     if (e.ctrlKey && e.key === 'Enter') {
                         e.preventDefault();
-                        this.addQuestion();
-                    }
-
-                    // Ctrl + P to print
-                    if (e.ctrlKey && e.key === 'p') {
-                        e.preventDefault();
-                        window.print();
+                        if (this.editorState.currentTab === 'single') {
+                            this.addQuestion();
+                        } else if (this.editorState.currentTab === 'mcq') {
+                            this.addMCQQuestion();
+                        }
                     }
                 });
 
@@ -1705,11 +1284,6 @@
 
                 document.getElementById('confirmNo').addEventListener('click', () => {
                     document.getElementById('confirmModal').style.display = 'none';
-                });
-
-                // Template save confirm
-                document.getElementById('saveTemplateConfirm').addEventListener('click', () => {
-                    this.saveTemplate();
                 });
             },
 
@@ -1725,13 +1299,11 @@
                 // Validation
                 if (!question || !answer) {
                     this.showToast('প্রশ্ন এবং উত্তর উভয়ই প্রয়োজন', 'error');
-                    this.shakeElement(this.elements.questionInput);
                     return;
                 }
 
                 if (marks < 1 || marks > 100) {
                     this.showToast('নম্বর ১ থেকে ১০০ এর মধ্যে হতে হবে', 'error');
-                    this.shakeElement(this.elements.marksInput);
                     return;
                 }
 
@@ -1745,13 +1317,6 @@
                     category: category,
                     type: type,
                     createdAt: new Date().toISOString(),
-                    metadata: {
-                        charCount: {
-                            question: question.length,
-                            answer: answer.length,
-                        },
-                        estimatedTime: this.calculateEstimatedTime(marks, difficulty),
-                    }
                 };
 
                 // Add to state
@@ -1766,7 +1331,7 @@
                 this.renderQuestions();
                 this.showToast('প্রশ্ন সফলভাবে যোগ করা হয়েছে', 'success');
 
-                // Auto-save
+                // Save
                 this.saveToLocalStorage();
             },
 
@@ -1777,7 +1342,6 @@
                 const optionB = this.elements.optionB.value.trim();
                 const optionC = this.elements.optionC.value.trim();
                 const optionD = this.elements.optionD.value.trim();
-                const explanation = this.elements.mcqExplanation.value.trim();
                 const correctOption = document.querySelector('input[name="correctOption"]:checked');
 
                 // Validation
@@ -1808,7 +1372,6 @@
                         D: optionD,
                     },
                     correctAnswer: correctOption.value,
-                    explanation: explanation,
                     marks: 1,
                     difficulty: 'medium',
                     category: 'general',
@@ -1824,7 +1387,6 @@
                 this.elements.optionB.value = '';
                 this.elements.optionC.value = '';
                 this.elements.optionD.value = '';
-                this.elements.mcqExplanation.value = '';
                 document.querySelectorAll('input[name="correctOption"]').forEach(radio => {
                     radio.checked = false;
                 });
@@ -1833,103 +1395,6 @@
                 this.updateStatistics();
                 this.renderQuestions();
                 this.showToast('MCQ প্রশ্ন সফলভাবে যোগ করা হয়েছে', 'success');
-            },
-
-            // Process bulk input
-            processBulkInput: function() {
-                const text = this.elements.bulkInput.value.trim();
-                if (!text) {
-                    this.showToast('কোন টেক্সট পাওয়া যায়নি', 'error');
-                    return;
-                }
-
-                const lines = text.split('\n');
-                const questions = [];
-                let currentQuestion = null;
-                let currentAnswer = null;
-                let inQuestion = false;
-                let inAnswer = false;
-
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    
-                    if (line.startsWith('প্রশ্ন') || line.startsWith('Question') || line.startsWith('Q:')) {
-                        if (currentQuestion && currentAnswer) {
-                            questions.push({
-                                question: currentQuestion,
-                                answer: currentAnswer,
-                                marks: 10,
-                                difficulty: 'medium',
-                                category: 'general',
-                                type: 'short',
-                            });
-                        }
-                        
-                        // Extract question text
-                        const questionMatch = line.match(/প্রশ্ন\s*\d*[:.]?\s*(.+)/) || 
-                                              line.match(/Question\s*\d*[:.]?\s*(.+)/) ||
-                                              line.match(/Q[:.]?\s*(.+)/);
-                        
-                        if (questionMatch) {
-                            currentQuestion = questionMatch[1];
-                            currentAnswer = '';
-                            inQuestion = true;
-                            inAnswer = false;
-                        }
-                    } else if (line.startsWith('উত্তর') || line.startsWith('Answer') || line.startsWith('A:')) {
-                        inQuestion = false;
-                        inAnswer = true;
-                        const answerMatch = line.match(/উত্তর[:.]?\s*(.+)/) || 
-                                           line.match(/Answer[:.]?\s*(.+)/) ||
-                                           line.match(/A[:.]?\s*(.+)/);
-                        
-                        if (answerMatch) {
-                            currentAnswer = answerMatch[1];
-                        }
-                    } else if (line === '') {
-                        // Empty line - do nothing
-                    } else {
-                        if (inQuestion) {
-                            currentQuestion += ' ' + line;
-                        } else if (inAnswer) {
-                            currentAnswer += ' ' + line;
-                        }
-                    }
-                }
-
-                // Add the last question
-                if (currentQuestion && currentAnswer) {
-                    questions.push({
-                        question: currentQuestion,
-                        answer: currentAnswer,
-                        marks: 10,
-                        difficulty: 'medium',
-                        category: 'general',
-                        type: 'short',
-                    });
-                }
-
-                if (questions.length === 0) {
-                    this.showToast('কোন প্রশ্ন পাওয়া যায়নি', 'error');
-                    return;
-                }
-
-                // Add all questions
-                questions.forEach(q => {
-                    this.state.questions.push({
-                        id: Date.now() + Math.random(),
-                        ...q,
-                        createdAt: new Date().toISOString(),
-                    });
-                });
-
-                // Update UI
-                this.updateStatistics();
-                this.renderQuestions();
-                this.showToast(`${questions.length} টি প্রশ্ন সফলভাবে যোগ করা হয়েছে`, 'success');
-                
-                // Clear bulk input
-                this.elements.bulkInput.value = '';
             },
 
             // Render questions in preview
@@ -1950,7 +1415,7 @@
 
                 this.state.questions.forEach((q, index) => {
                     const questionCard = document.createElement('div');
-                    questionCard.className = 'question-card fade-in';
+                    questionCard.className = 'question-card';
                     questionCard.dataset.id = q.id;
 
                     // Bengali numbers
@@ -1983,14 +1448,6 @@
                                 </div>
                             </div>
                         `;
-
-                        if (q.explanation) {
-                            questionHTML += `
-                                <div class="answer-text">
-                                    <strong>ব্যাখ্যা:</strong> ${this.escapeHtml(q.explanation)}
-                                </div>
-                            `;
-                        }
                     } else {
                         questionHTML += `
                             <div class="answer-text">${this.formatAnswer(q.answer)}</div>
@@ -2011,8 +1468,6 @@
                         'science': 'বিজ্ঞান',
                         'english': 'ইংরেজি',
                         'bangla': 'বাংলা',
-                        'history': 'ইতিহাস',
-                        'geography': 'ভূগোল',
                     };
 
                     questionHTML += `
@@ -2047,7 +1502,7 @@
             updateStatistics: function() {
                 const totalQuestions = this.state.questions.length;
                 const totalMarks = this.state.questions.reduce((sum, q) => sum + q.marks, 0);
-                const totalTime = this.state.questions.reduce((sum, q) => sum + (q.metadata?.estimatedTime || 2), 0);
+                const totalTime = this.state.questions.reduce((sum, q) => sum + (q.marks * 2), 0);
                 
                 // Calculate difficulty level
                 const difficulties = this.state.questions.map(q => q.difficulty);
@@ -2063,33 +1518,15 @@
                 this.state.statistics = {
                     totalQuestions,
                     totalMarks,
-                    totalTime: Math.ceil(totalTime),
+                    totalTime: Math.ceil(totalTime / 10) * 10, // Round to nearest 10
                     difficultyLevel: paperLevel,
-                    categories: this.state.questions.reduce((cats, q) => {
-                        cats[q.category] = (cats[q.category] || 0) + 1;
-                        return cats;
-                    }, {})
                 };
 
                 // Update UI
                 this.elements.totalQuestions.textContent = totalQuestions;
                 this.elements.totalMarks.textContent = totalMarks;
-                this.elements.estimatedTime.textContent = Math.ceil(totalTime);
+                this.elements.estimatedTime.textContent = this.state.statistics.totalTime;
                 this.elements.paperLevel.textContent = paperLevel;
-            },
-
-            // Calculate estimated time for a question
-            calculateEstimatedTime: function(marks, difficulty) {
-                let timePerMark = 1; // minutes per mark
-                
-                switch(difficulty) {
-                    case 'easy': timePerMark = 0.8; break;
-                    case 'medium': timePerMark = 1; break;
-                    case 'hard': timePerMark = 1.5; break;
-                    case 'very-hard': timePerMark = 2; break;
-                }
-                
-                return Math.ceil(marks * timePerMark);
             },
 
             // Format answer text
@@ -2147,26 +1584,34 @@
                 if (!question) return;
 
                 // Populate form with question data
-                this.elements.questionInput.value = question.question;
-                this.elements.answerInput.value = question.answer;
-                this.elements.marksInput.value = question.marks;
-                this.elements.difficultySelect.value = question.difficulty;
-                this.elements.categorySelect.value = question.category;
-
-                // Set question type
-                document.querySelectorAll('.type-option').forEach(opt => {
-                    opt.classList.remove('active');
-                    if (opt.dataset.type === question.type) {
-                        opt.classList.add('active');
-                    }
-                });
-                this.editorState.questionType = question.type;
+                if (question.type === 'mcq') {
+                    this.switchTab('mcq');
+                    this.elements.mcqQuestion.value = question.question;
+                    this.elements.optionA.value = question.options.A;
+                    this.elements.optionB.value = question.options.B;
+                    this.elements.optionC.value = question.options.C;
+                    this.elements.optionD.value = question.options.D;
+                    document.querySelector(`input[name="correctOption"][value="${question.correctAnswer}"]`).checked = true;
+                } else {
+                    this.switchTab('single');
+                    this.elements.questionInput.value = question.question;
+                    this.elements.answerInput.value = question.answer;
+                    this.elements.marksInput.value = question.marks;
+                    this.elements.difficultySelect.value = question.difficulty;
+                    this.elements.categorySelect.value = question.category;
+                    
+                    // Set question type
+                    document.querySelectorAll('.type-option').forEach(opt => {
+                        opt.classList.remove('active');
+                        if (opt.dataset.type === question.type) {
+                            opt.classList.add('active');
+                        }
+                    });
+                    this.editorState.questionType = question.type;
+                }
 
                 // Remove the question
                 this.state.questions = this.state.questions.filter(q => q.id !== id);
-
-                // Switch to single tab
-                this.switchTab('single');
 
                 this.showToast('প্রশ্ন সম্পাদনার জন্য প্রস্তুত', 'info');
             },
@@ -2196,39 +1641,20 @@
                 // Apply font size
                 preview.style.fontSize = this.getFontSizeValue(this.state.settings.fontSize);
                 
-                // Apply layout
-                if (this.state.settings.layout === 'two-column') {
-                    preview.style.columnCount = '2';
-                    preview.style.columnGap = '40px';
-                } else {
-                    preview.style.columnCount = '1';
-                }
-
                 // Apply theme colors
                 const themeColors = {
                     'default': { primary: '#2c3e50', secondary: '#4a6491' },
                     'green': { primary: '#27ae60', secondary: '#2ecc71' },
                     'red': { primary: '#e74c3c', secondary: '#c0392b' },
                     'purple': { primary: '#9b59b6', secondary: '#8e44ad' },
-                    'dark': { primary: '#34495e', secondary: '#2c3e50' },
                 };
 
                 const colors = themeColors[this.state.settings.theme] || themeColors.default;
                 
                 // Update CSS variables
-                preview.style.setProperty('--primary-color', colors.primary);
-                preview.style.setProperty('--secondary-color', colors.secondary);
+                document.documentElement.style.setProperty('--primary-color', colors.primary);
+                document.documentElement.style.setProperty('--secondary-color', colors.secondary);
                 
-                // Update question cards
-                document.querySelectorAll('.question-card').forEach(card => {
-                    card.style.borderLeftColor = colors.secondary;
-                });
-
-                // Update question numbers
-                document.querySelectorAll('.question-number').forEach(num => {
-                    num.style.background = colors.secondary;
-                });
-
                 this.showToast('সেটিংস প্রয়োগ করা হয়েছে', 'success');
             },
 
@@ -2238,9 +1664,148 @@
                     'small': '14px',
                     'medium': '16px',
                     'large': '18px',
-                    'xlarge': '20px',
                 };
                 return sizes[size] || sizes.medium;
+            },
+
+            // Create printable content for printing
+            createPrintableContent: function() {
+                const printableContent = document.getElementById('printable-content');
+                printableContent.innerHTML = '';
+                
+                // Create a container for printable content
+                const printContainer = document.createElement('div');
+                printContainer.style.padding = '20px';
+                printContainer.style.fontFamily = 'Arial, sans-serif';
+                printContainer.style.lineHeight = '1.6';
+                
+                // Add header
+                const header = document.createElement('div');
+                header.style.textAlign = 'center';
+                header.style.marginBottom = '30px';
+                header.style.borderBottom = '3px solid #2c3e50';
+                header.style.paddingBottom = '20px';
+                
+                // Add image
+                const img = document.createElement('img');
+                img.src = this.config.headerImage;
+                img.alt = 'PRM Header';
+                img.style.maxWidth = '200px';
+                img.style.height = 'auto';
+                img.style.marginBottom = '10px';
+                
+                // Add title
+                const title = document.createElement('h1');
+                title.textContent = 'PRM Question Paper';
+                title.style.color = '#2c3e50';
+                title.style.margin = '10px 0';
+                title.style.fontSize = '28px';
+                
+                // Add paper info
+                const info = document.createElement('div');
+                info.style.display = 'flex';
+                info.style.justifyContent = 'space-between';
+                info.style.padding = '10px 20px';
+                info.style.backgroundColor = '#f8f9fa';
+                info.style.borderRadius = '8px';
+                info.style.marginTop = '10px';
+                info.style.fontSize = '14px';
+                info.style.color = '#666';
+                
+                info.innerHTML = `
+                    <div>মোট প্রশ্ন: ${this.state.questions.length}</div>
+                    <div>মোট নম্বর: ${this.state.statistics.totalMarks}</div>
+                    <div>সময়: ${this.state.statistics.totalTime} মিনিট</div>
+                `;
+                
+                header.appendChild(img);
+                header.appendChild(title);
+                header.appendChild(info);
+                printContainer.appendChild(header);
+                
+                // Add questions
+                this.state.questions.forEach((q, index) => {
+                    const questionCard = document.createElement('div');
+                    questionCard.style.marginBottom = '25px';
+                    questionCard.style.padding = '20px';
+                    questionCard.style.border = '1px solid #ddd';
+                    questionCard.style.borderRadius = '8px';
+                    questionCard.style.borderLeft = '5px solid #3498db';
+                    questionCard.style.pageBreakInside = 'avoid';
+                    
+                    // Bengali numbers
+                    const bengaliNumbers = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০'];
+                    const bengaliNumber = bengaliNumbers[index] || (index + 1);
+                    
+                    let questionHTML = `
+                        <div style="position: relative; margin-bottom: 15px;">
+                            <div style="position: absolute; left: -15px; top: 0; background: #3498db; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                ${bengaliNumber}
+                            </div>
+                            <div style="font-size: 18px; font-weight: 600; color: #2c3e50; margin-left: 25px;">
+                                ${this.escapeHtml(q.question)}
+                            </div>
+                        </div>
+                    `;
+                    
+                    if (q.type === 'mcq') {
+                        questionHTML += `
+                            <div style="margin-left: 25px; margin-top: 15px;">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0;">
+                                    <span style="font-weight: 600; color: #2c3e50; min-width: 30px;">ক</span>
+                                    <span>${this.escapeHtml(q.options.A)}</span>
+                                </div>
+                                <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0;">
+                                    <span style="font-weight: 600; color: #2c3e50; min-width: 30px;">খ</span>
+                                    <span>${this.escapeHtml(q.options.B)}</span>
+                                </div>
+                                <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0;">
+                                    <span style="font-weight: 600; color: #2c3e50; min-width: 30px;">গ</span>
+                                    <span>${this.escapeHtml(q.options.C)}</span>
+                                </div>
+                                <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0;">
+                                    <span style="font-weight: 600; color: #2c3e50; min-width: 30px;">ঘ</span>
+                                    <span>${this.escapeHtml(q.options.D)}</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        questionHTML += `
+                            <div style="margin-left: 25px; padding-left: 15px; border-left: 2px solid #e0e0e0; margin-top: 15px; font-size: 16px; color: #444;">
+                                ${this.formatAnswer(q.answer)}
+                            </div>
+                        `;
+                    }
+                    
+                    // Add footer with marks
+                    questionHTML += `
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e0e0e0; font-size: 14px; color: #666; display: flex; justify-content: space-between;">
+                            <div>
+                                <span style="background: #f39c12; color: white; padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: 600;">
+                                    ${q.marks} নম্বর
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    questionCard.innerHTML = questionHTML;
+                    printContainer.appendChild(questionCard);
+                });
+                
+                // Add footer text if set
+                if (this.state.settings.footerText) {
+                    const footer = document.createElement('div');
+                    footer.style.textAlign = 'center';
+                    footer.style.marginTop = '40px';
+                    footer.style.paddingTop = '20px';
+                    footer.style.borderTop = '1px solid #ddd';
+                    footer.style.color = '#666';
+                    footer.style.fontSize = '14px';
+                    footer.textContent = this.state.settings.footerText;
+                    printContainer.appendChild(footer);
+                }
+                
+                printableContent.appendChild(printContainer);
             },
 
             // Download PDF
@@ -2252,51 +1817,15 @@
 
                 this.showLoading('PDF তৈরি করা হচ্ছে...');
 
-                // Clone the preview container
-                const previewClone = document.getElementById('pdfPreview').cloneNode(true);
+                // Create printable content first
+                this.createPrintableContent();
                 
-                // Add watermark if set
-                if (this.state.settings.watermark) {
-                    const watermark = document.createElement('div');
-                    watermark.className = 'watermark';
-                    watermark.style.cssText = `
-                        position: fixed;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%) rotate(-45deg);
-                        font-size: 80px;
-                        opacity: 0.1;
-                        color: #000;
-                        pointer-events: none;
-                        z-index: 1000;
-                        white-space: nowrap;
-                    `;
-                    watermark.textContent = this.state.settings.watermark;
-                    previewClone.appendChild(watermark);
-                }
-
-                // Add footer if set
-                if (this.state.settings.footerText) {
-                    const footer = document.createElement('div');
-                    footer.style.cssText = `
-                        text-align: center;
-                        padding: 20px;
-                        margin-top: 40px;
-                        border-top: 1px solid #ddd;
-                        color: #666;
-                        font-size: 14px;
-                    `;
-                    footer.textContent = this.state.settings.footerText;
-                    previewClone.appendChild(footer);
-                }
-
-                // Hide edit buttons in PDF
-                previewClone.querySelectorAll('.btn').forEach(btn => {
-                    btn.style.display = 'none';
-                });
-
-                // Generate PDF
-                html2canvas(previewClone, {
+                const printableContent = document.getElementById('printable-content');
+                
+                // Show the printable content temporarily
+                printableContent.style.display = 'block';
+                
+                html2canvas(printableContent, {
                     scale: 2,
                     useCORS: true,
                     backgroundColor: '#ffffff',
@@ -2310,10 +1839,9 @@
                         orientation: 'portrait',
                         unit: 'mm',
                         format: 'a4',
-                        compress: true,
                     });
 
-                    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                    const imgData = canvas.toDataURL('image/png');
                     const imgWidth = 190;
                     const imgHeight = canvas.height * imgWidth / canvas.width;
                     
@@ -2321,13 +1849,14 @@
                     let heightLeft = imgHeight;
                     const pageHeight = 277;
 
-                    doc.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+                    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                     heightLeft -= pageHeight;
 
+                    // Add additional pages if needed
                     while (heightLeft >= 0) {
-                        position = heightLeft - imgHeight;
+                        position = heightLeft - imgHeight + 10;
                         doc.addPage();
-                        doc.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+                        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                         heightLeft -= pageHeight;
                     }
 
@@ -2337,17 +1866,23 @@
                         subject: 'Question Paper',
                         author: 'PRM Generator',
                         keywords: 'question, paper, prm',
-                        creator: 'Advanced PRM Generator'
                     });
 
                     // Save PDF
                     doc.save(this.config.defaultPDFName);
                     
+                    // Hide printable content
+                    printableContent.style.display = 'none';
+                    
                     this.hideLoading();
                     this.showToast('PDF সফলভাবে ডাউনলোড হয়েছে', 'success');
                 }).catch(error => {
+                    console.error('PDF Generation Error:', error);
                     this.hideLoading();
-                    this.showError('PDF তৈরি করতে সমস্যা হয়েছে: ' + error.message);
+                    this.showToast('PDF তৈরি করতে সমস্যা হয়েছে', 'error');
+                    
+                    // Hide printable content on error
+                    printableContent.style.display = 'none';
                 });
             },
 
@@ -2360,205 +1895,62 @@
 
                 this.showLoading('ছবি তৈরি করা হচ্ছে...');
 
-                const preview = document.getElementById('pdfPreview');
+                // Create printable content first
+                this.createPrintableContent();
                 
-                html2canvas(preview, {
+                const printableContent = document.getElementById('printable-content');
+                
+                // Show the printable content temporarily
+                printableContent.style.display = 'block';
+                
+                html2canvas(printableContent, {
                     scale: 2,
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     logging: false,
+                    scrollY: -window.scrollY,
+                    windowHeight: printableContent.scrollHeight,
                 }).then(canvas => {
                     const link = document.createElement('a');
                     link.download = 'PRM_Question_Paper.png';
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                     
+                    // Hide printable content
+                    printableContent.style.display = 'none';
+                    
                     this.hideLoading();
                     this.showToast('ছবি সফলভাবে ডাউনলোড হয়েছে', 'success');
                 }).catch(error => {
+                    console.error('Image Generation Error:', error);
                     this.hideLoading();
-                    this.showError('ছবি তৈরি করতে সমস্যা হয়েছে: ' + error.message);
+                    this.showToast('ছবি তৈরি করতে সমস্যা হয়েছে', 'error');
+                    
+                    // Hide printable content on error
+                    printableContent.style.display = 'none';
                 });
             },
 
-            // Export as JSON
-            exportJSON: function() {
+            // Print paper
+            printPaper: function() {
                 if (this.state.questions.length === 0) {
                     this.showToast('কোন প্রশ্ন নেই', 'error');
                     return;
                 }
 
-                const data = {
-                    app: this.config.appName,
-                    version: this.config.version,
-                    exportedAt: new Date().toISOString(),
-                    questions: this.state.questions,
-                    settings: this.state.settings,
-                    statistics: this.state.statistics,
-                };
-
-                const jsonStr = JSON.stringify(data, null, 2);
-                const blob = new Blob([jsonStr], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
+                this.createPrintableContent();
                 
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `PRM_Questions_${new Date().toISOString().slice(0, 10)}.json`;
-                link.click();
+                // Show the printable content
+                const printableContent = document.getElementById('printable-content');
+                printableContent.style.display = 'block';
                 
-                URL.revokeObjectURL(url);
-                this.showToast('JSON ফাইল সফলভাবে এক্সপোর্ট করা হয়েছে', 'success');
-            },
-
-            // Export as CSV
-            exportCSV: function() {
-                if (this.state.questions.length === 0) {
-                    this.showToast('কোন প্রশ্ন নেই', 'error');
-                    return;
-                }
-
-                // Prepare CSV data
-                const headers = ['ক্রমিক', 'প্রশ্ন', 'উত্তর', 'নম্বর', 'কঠিনতা', 'বিষয়শ্রেণী', 'ধরণ'];
-                const rows = this.state.questions.map((q, index) => [
-                    index + 1,
-                    `"${q.question.replace(/"/g, '""')}"`,
-                    `"${q.answer.replace(/"/g, '""')}"`,
-                    q.marks,
-                    q.difficulty,
-                    q.category,
-                    q.type,
-                ]);
-
-                const csvContent = [
-                    headers.join(','),
-                    ...rows.map(row => row.join(','))
-                ].join('\n');
-
-                const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
+                // Trigger print
+                window.print();
                 
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `PRM_Questions_${new Date().toISOString().slice(0, 10)}.csv`;
-                link.click();
-                
-                URL.revokeObjectURL(url);
-                this.showToast('CSV ফাইল সফলভাবে এক্সপোর্ট করা হয়েছে', 'success');
-            },
-
-            // Import file
-            importFile: function(file) {
-                if (!file) return;
-
-                if (file.size > this.config.maxFileSize) {
-                    this.showError('ফাইল খুব বড়। সর্বোচ্চ ১০MB ফাইল আপলোড করতে পারবেন।');
-                    return;
-                }
-
-                const reader = new FileReader();
-                
-                reader.onload = (e) => {
-                    try {
-                        const content = e.target.result;
-                        let data;
-                        
-                        if (file.name.endsWith('.json')) {
-                            data = JSON.parse(content);
-                            if (data.questions && Array.isArray(data.questions)) {
-                                this.state.questions = [...this.state.questions, ...data.questions];
-                                this.showToast(`${data.questions.length} টি প্রশ্ন ইমপোর্ট করা হয়েছে`, 'success');
-                            }
-                        } else if (file.name.endsWith('.csv')) {
-                            // Parse CSV
-                            const rows = content.split('\n');
-                            const importedQuestions = [];
-                            
-                            for (let i = 1; i < rows.length; i++) {
-                                const row = rows[i].trim();
-                                if (!row) continue;
-                                
-                                const cols = row.split(',').map(col => 
-                                    col.startsWith('"') && col.endsWith('"') ? 
-                                    col.slice(1, -1).replace(/""/g, '"') : col
-                                );
-                                
-                                if (cols.length >= 3) {
-                                    importedQuestions.push({
-                                        id: Date.now() + i,
-                                        question: cols[1] || '',
-                                        answer: cols[2] || '',
-                                        marks: parseInt(cols[3]) || 10,
-                                        difficulty: cols[4] || 'medium',
-                                        category: cols[5] || 'general',
-                                        type: cols[6] || 'short',
-                                        createdAt: new Date().toISOString(),
-                                    });
-                                }
-                            }
-                            
-                            this.state.questions = [...this.state.questions, ...importedQuestions];
-                            this.showToast(`${importedQuestions.length} টি প্রশ্ন ইমপোর্ট করা হয়েছে`, 'success');
-                        } else {
-                            // Try to parse as text
-                            this.elements.bulkInput.value = content;
-                            this.switchTab('bulk');
-                            this.showToast('ফাইল লোড করা হয়েছে, প্রক্রিয়া করুন', 'info');
-                            return;
-                        }
-                        
-                        this.updateStatistics();
-                        this.renderQuestions();
-                        this.saveToLocalStorage();
-                        
-                    } catch (error) {
-                        this.showError('ফাইল পার্স করতে সমস্যা হয়েছে: ' + error.message);
-                    }
-                };
-                
-                reader.onerror = () => {
-                    this.showError('ফাইল পড়তে সমস্যা হয়েছে');
-                };
-                
-                reader.readAsText(file);
-            },
-
-            // Save template
-            saveTemplate: function() {
-                const name = document.getElementById('templateName').value.trim();
-                const description = document.getElementById('templateDescription').value.trim();
-                
-                if (!name) {
-                    this.showToast('টেমপ্লেটের নাম প্রয়োজন', 'error');
-                    return;
-                }
-                
-                const template = {
-                    name: name,
-                    description: description,
-                    questions: [...this.state.questions],
-                    settings: {...this.state.settings},
-                    createdAt: new Date().toISOString(),
-                };
-                
-                // Save to localStorage
-                const templates = JSON.parse(localStorage.getItem('prm_templates') || '{}');
-                templates[name] = template;
-                localStorage.setItem('prm_templates', JSON.stringify(templates));
-                
-                document.getElementById('templateModal').style.display = 'none';
-                this.showToast(`"${name}" টেমপ্লেট সেভ করা হয়েছে`, 'success');
-            },
-
-            // Open template modal
-            openTemplateModal: function() {
-                if (this.state.questions.length === 0) {
-                    this.showToast('কোন প্রশ্ন নেই', 'error');
-                    return;
-                }
-                
-                document.getElementById('templateName').value = '';
-                document.getElementById('templateDescription').value = '';
-                document.getElementById('templateModal').style.display = 'flex';
+                // Hide printable content after print
+                setTimeout(() => {
+                    printableContent.style.display = 'none';
+                }, 1000);
             },
 
             // Load from localStorage
@@ -2570,16 +1962,8 @@
                         
                         if (data.questions) this.state.questions = data.questions;
                         if (data.settings) this.state.settings = { ...this.state.settings, ...data.settings };
-                        if (data.statistics) this.state.statistics = data.statistics;
                         
-                        this.editorState.lastSaved = new Date();
                         this.showToast('পূর্বের ডেটা লোড করা হয়েছে', 'info');
-                    }
-                    
-                    // Load templates
-                    const templates = localStorage.getItem('prm_templates');
-                    if (templates) {
-                        this.state.templates = JSON.parse(templates);
                     }
                 } catch (error) {
                     console.error('Error loading from localStorage:', error);
@@ -2592,22 +1976,13 @@
                     const data = {
                         questions: this.state.questions,
                         settings: this.state.settings,
-                        statistics: this.state.statistics,
                         lastSaved: new Date().toISOString(),
                     };
                     
                     localStorage.setItem('prm_question_paper', JSON.stringify(data));
-                    this.editorState.lastSaved = new Date();
                 } catch (error) {
                     console.error('Error saving to localStorage:', error);
                 }
-            },
-
-            // Start auto-save
-            startAutoSave: function() {
-                setInterval(() => {
-                    this.saveToLocalStorage();
-                }, this.config.autoSaveInterval);
             },
 
             // Show toast notification
@@ -2630,12 +2005,6 @@
                 setTimeout(() => {
                     toast.style.display = 'none';
                 }, 3000);
-            },
-
-            // Show error modal
-            showError: function(message) {
-                document.getElementById('errorMessage').textContent = message;
-                document.getElementById('errorModal').style.display = 'flex';
             },
 
             // Show loading modal
@@ -2669,14 +2038,6 @@
                 document.getElementById('confirmMessage').textContent = message;
                 document.getElementById('confirmModal').style.display = 'flex';
                 this.confirmCallback = callback;
-            },
-
-            // Shake element for error indication
-            shakeElement: function(element) {
-                element.classList.add('shake');
-                setTimeout(() => {
-                    element.classList.remove('shake');
-                }, 500);
             },
         };
 
