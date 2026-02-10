@@ -1,2053 +1,1016 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced PRM Question Paper Generator - প্রফেশনাল প্রশ্নপত্র তৈরি সফ্টওয়্যার</title>
+    <title>MART img Drop - Image Upload & Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #4a6491;
-            --accent-color: #3498db;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --light-bg: #f8f9fa;
-            --dark-text: #2c3e50;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --border: #dee2e6;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Kalpurush', 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            color: var(--dark-text);
-            line-height: 1.8;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e8f7 100%);
             min-height: 100vh;
+            color: var(--dark);
             padding: 20px;
         }
-
+        
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-        }
-
-        /* Header Styles */
-        .main-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 25px 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            position: relative;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #7209b7 100%);
+            color: white;
+            padding: 30px;
             text-align: center;
         }
-
-        .header-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .header-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto 20px;
-        }
-
-        /* Stats Cards */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
+        
+        .logo {
             font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            display: block;
             margin-bottom: 10px;
         }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
-
-        /* Main Content Grid */
-        .main-grid {
+        
+        .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Main Layout */
+        .main-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr 2fr;
+            min-height: 700px;
         }
-
-        @media (max-width: 1024px) {
-            .main-grid {
+        
+        @media (max-width: 768px) {
+            .main-content {
                 grid-template-columns: 1fr;
             }
         }
-
-        /* Panel Styles */
-        .panel {
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
+        
+        /* Left Panel */
+        .left-panel {
+            background: var(--light);
+            padding: 30px;
+            border-right: 1px solid var(--border);
         }
-
-        .panel-header {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 20px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .panel-title {
-            font-size: 1.4rem;
+        
+        .section-title {
+            font-size: 1.2rem;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .panel-content {
-            padding: 25px;
-        }
-
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        textarea, input, select {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: var(--light-bg);
-        }
-
-        textarea {
-            min-height: 150px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        textarea:focus, input:focus, select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-            background: white;
-        }
-
-        .char-count {
-            text-align: right;
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        /* Question Types */
-        .question-types {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .type-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .type-option:hover {
-            border-color: var(--accent-color);
-            background: rgba(52, 152, 219, 0.1);
-        }
-
-        .type-option.active {
-            border-color: var(--success-color);
-            background: rgba(39, 174, 96, 0.1);
-        }
-
-        /* Button Styles */
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(44, 62, 80, 0.3);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-success {
-            background: linear-gradient(to right, var(--success-color), #2ecc71);
-            color: white;
-        }
-
-        .btn-warning {
-            background: linear-gradient(to right, var(--warning-color), #f1c40f);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(to right, var(--danger-color), #c0392b);
-            color: white;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        /* Preview Container */
-        .preview-container {
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            height: 600px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pdf-preview {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background: white;
-        }
-
-        /* PDF Header */
-        .pdf-header {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-bottom: 3px solid var(--secondary-color);
+            color: var(--dark);
             margin-bottom: 20px;
-            position: relative;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
-        .header-image-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 15px;
+        
+        .upload-area {
+            border: 3px dashed var(--primary);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            margin-bottom: 25px;
         }
-
-        .header-image {
-            max-width: 100%;
-            height: auto;
-            max-height: 120px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        
+        .upload-area:hover {
+            background: #f0f4ff;
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.1);
         }
-
-        .prm-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin: 10px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
         }
-
-        .paper-info {
+        
+        .upload-text h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .upload-text p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        
+        #imageInput {
+            display: none;
+        }
+        
+        /* Image Info */
+        .image-info {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            display: none;
+        }
+        
+        .image-info.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 20px;
-            background: var(--light-bg);
-            border-radius: 8px;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #666;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
         }
-
-        /* Question Cards */
-        .question-card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
+        
+        .info-label {
+            font-weight: 600;
+            color: var(--gray);
+        }
+        
+        .info-value {
+            color: var(--dark);
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+        
+        /* Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
             margin-bottom: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 5px solid var(--accent-color);
-            position: relative;
-            transition: transform 0.3s ease;
         }
-
-        .question-number {
-            position: absolute;
-            left: -15px;
-            top: 20px;
-            background: var(--accent-color);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+        
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
         }
-
-        .question-text {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            padding-left: 25px;
-            line-height: 1.6;
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
         }
-
-        .answer-text {
-            font-size: 16px;
-            color: #444;
-            line-height: 1.8;
-            padding-left: 25px;
-            border-left: 2px solid #e0e0e0;
-            margin-left: 10px;
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
-
-        .question-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed #e0e0e0;
-            font-size: 14px;
-            color: #666;
+        
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
         }
-
-        /* Toolbar */
-        .toolbar {
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Right Panel */
+        .right-panel {
+            padding: 30px;
+            background: white;
+        }
+        
+        /* Gallery */
+        .gallery-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 25px;
-            background: var(--light-bg);
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .toolbar-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        /* Settings Panel */
-        .settings-panel {
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 25px;
             margin-bottom: 30px;
         }
-
-        .settings-grid {
+        
+        .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
+            margin-bottom: 40px;
         }
-
-        .setting-item {
+        
+        /* Image Card */
+        .image-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+        
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-img {
+            height: 180px;
+            overflow: hidden;
+            background: var(--light);
+        }
+        
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .image-card:hover .card-img img {
+            transform: scale(1.05);
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+        
+        .card-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .card-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            background: var(--light);
+            color: var(--dark);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            background: var(--light-bg);
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-
-        /* Footer */
-        .main-footer {
-            text-align: center;
-            padding: 25px;
-            margin-top: 40px;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border-top: 3px solid var(--secondary-color);
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            display: none;
             justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            gap: 5px;
+            transition: all 0.3s ease;
         }
-
-        .modal-content {
-            background: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+        
+        .card-btn:hover {
+            background: #e9ecef;
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-title {
-                font-size: 2rem;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .panel-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .btn-group {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .paper-info {
-                flex-direction: column;
-                gap: 10px;
-            }
+        
+        .card-btn.download {
+            background: #e7f5ff;
+            color: var(--primary);
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
+        
+        .card-btn.download:hover {
+            background: #d0ebff;
         }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
+        
+        .card-btn.copy {
+            background: #e6fcf5;
+            color: var(--success);
         }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--secondary-color);
-            border-radius: 10px;
+        
+        .card-btn.copy:hover {
+            background: #c3fae8;
         }
-
-        /* Loading Spinner */
-        .spinner {
-            border: 4px solid rgba(0,0,0,0.1);
+        
+        .card-btn.delete {
+            background: #fff5f5;
+            color: var(--danger);
+        }
+        
+        .card-btn.delete:hover {
+            background: #ffe3e3;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--border);
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Loading */
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
-            border-top: 4px solid var(--accent-color);
-            width: 40px;
-            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
         }
-
+        
+        .loading.active {
+            display: inline-block;
+        }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* Badge Styles */
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-primary {
-            background: rgba(52, 152, 219, 0.2);
-            color: var(--accent-color);
-        }
-
-        .badge-warning {
-            background: rgba(243, 156, 18, 0.2);
-            color: var(--warning-color);
-        }
-
-        /* Tab Navigation */
-        .tab-navigation {
-            display: flex;
-            gap: 5px;
-            background: var(--light-bg);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: transparent;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            color: #666;
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: var(--primary-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        /* Color Picker */
-        .color-picker {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .color-option {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: transform 0.3s ease;
-        }
-
-        .color-option:hover {
-            transform: scale(1.1);
-        }
-
-        .color-option.active {
-            border-color: var(--primary-color);
-            transform: scale(1.1);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            height: 8px;
-            background: var(--light-bg);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(to right, var(--accent-color), var(--secondary-color));
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            display: none;
-            z-index: 1001;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Print Styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            
-            #printable-content, #printable-content * {
-                visibility: visible;
-            }
-            
-            #printable-content {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                background: white;
-                padding: 20px;
-            }
-            
-            .no-print {
-                display: none !important;
-            }
-            
-            .question-card {
-                box-shadow: none !important;
-                border: 1px solid #ddd !important;
-                break-inside: avoid;
-                page-break-inside: avoid;
-            }
-        }
-
-        /* Marks Section */
-        .marks-section {
-            display: inline-block;
-            background: var(--warning-color);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-
-        /* MCQ Options */
-        .mcq-options {
-            padding-left: 25px;
-            margin: 15px 0;
-        }
-
-        .mcq-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            padding: 8px 12px;
-            background: var(--light-bg);
-            border-radius: 6px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .mcq-option.correct {
-            background: rgba(39, 174, 96, 0.1);
-            border-color: var(--success-color);
-        }
-
-        .option-label {
-            font-weight: 600;
-            color: var(--primary-color);
-            min-width: 30px;
-        }
-
-        /* Options Grid */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .option-input {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .option-input input[type="radio"],
-        .option-input input[type="checkbox"] {
-            width: auto;
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: var(--light);
+            border-top: 1px solid var(--border);
+            color: var(--gray);
         }
     </style>
 </head>
 <body>
-    <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
-
-    <!-- Printable Content (Hidden by default) -->
-    <div id="printable-content" style="display: none;"></div>
-
-    <!-- Main Container -->
     <div class="container">
-        <!-- Header -->
-        <header class="main-header">
-            <div class="header-content">
-                <h1 class="header-title">
-                    <i class="fas fa-file-pdf fa-2x"></i>
-                    <span>Advanced PRM Question Paper Generator</span>
-                </h1>
-                <p class="header-subtitle">পেশাদার মানের প্রশ্নপত্র তৈরি করুন, কাস্টমাইজ করুন এবং PDF হিসেবে ডাউনলোড করুন।</p>
+        <header>
+            <div class="logo">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <h1>MART img Drop</h1>
+            <p class="tagline">Upload images and get base64 code for website embedding</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="totalImages">0</span>
+                    <span class="stat-label">Total Images</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="totalSize">0 MB</span>
+                    <span class="stat-label">Storage Used</span>
+                </div>
             </div>
         </header>
-
-        <!-- Stats Cards -->
-        <div class="stats-container">
-            <div class="stat-card">
-                <span class="stat-number" id="totalQuestions">0</span>
-                <span class="stat-label">মোট প্রশ্ন</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="totalMarks">0</span>
-                <span class="stat-label">মোট নম্বর</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="estimatedTime">0</span>
-                <span class="stat-label">আনুমানিক সময় (মিনিট)</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="paperLevel">সহজ</span>
-                <span class="stat-label">পেপারের লেভেল</span>
-            </div>
-        </div>
-
-        <!-- Main Grid -->
-        <div class="main-grid">
-            <!-- Left Panel - Question Input -->
-            <div class="panel">
-                <div class="panel-header">
-                    <h2 class="panel-title">
-                        <i class="fas fa-edit"></i>
-                        প্রশ্ন ও উত্তর ইনপুট
-                    </h2>
+        
+        <div class="main-content">
+            <!-- Left Panel -->
+            <div class="left-panel">
+                <div class="section-title">
+                    <i class="fas fa-upload"></i>
+                    <span>Upload Image</span>
                 </div>
-                <div class="panel-content">
-                    <!-- Tab Navigation -->
-                    <div class="tab-navigation">
-                        <button class="tab-btn active" data-tab="single">একক প্রশ্ন</button>
-                        <button class="tab-btn" data-tab="mcq">MCQ প্রশ্ন</button>
+                
+                <div class="upload-area" id="dropArea">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <div class="upload-text">
+                        <h3>Click to Browse or Drag & Drop</h3>
+                        <p>Supported formats: JPG, PNG, GIF, WebP</p>
+                        <p>Maximum file size: 5MB</p>
                     </div>
-
-                    <!-- Single Question Tab -->
-                    <div id="single-tab" class="tab-content active">
-                        <div class="form-group">
-                            <label for="questionType">
-                                <i class="fas fa-tag"></i>
-                                প্রশ্নের ধরণ
-                            </label>
-                            <div class="question-types">
-                                <div class="type-option active" data-type="short">
-                                    <i class="fas fa-align-left"></i>
-                                    সংক্ষিপ্ত
-                                </div>
-                                <div class="type-option" data-type="descriptive">
-                                    <i class="fas fa-align-justify"></i>
-                                    বর্ণনামূলক
-                                </div>
-                                <div class="type-option" data-type="analytical">
-                                    <i class="fas fa-brain"></i>
-                                    বিশ্লেষণাত্মক
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="question">
-                                <i class="fas fa-question-circle"></i>
-                                প্রশ্ন
-                            </label>
-                            <textarea id="question" placeholder="আপনার প্রশ্নটি বিস্তারিতভাবে লিখুন..."></textarea>
-                            <div class="char-count">
-                                <span id="questionChars">0</span> / 1000 অক্ষর
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="answer">
-                                <i class="fas fa-comment-dots"></i>
-                                উত্তর
-                            </label>
-                            <textarea id="answer" placeholder="সম্পূর্ণ উত্তরটি লিখুন..."></textarea>
-                            <div class="char-count">
-                                <span id="answerChars">0</span> / 2000 অক্ষর
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="marks">
-                                <i class="fas fa-star"></i>
-                                নম্বর
-                            </label>
-                            <input type="number" id="marks" min="1" max="100" value="10">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="difficulty">
-                                <i class="fas fa-chart-line"></i>
-                                কঠিনতা
-                            </label>
-                            <select id="difficulty">
-                                <option value="easy">সহজ</option>
-                                <option value="medium">মধ্যম</option>
-                                <option value="hard">কঠিন</option>
-                                <option value="very-hard">অত্যন্ত কঠিন</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="category">
-                                <i class="fas fa-folder"></i>
-                                বিষয়শ্রেণী
-                            </label>
-                            <select id="category">
-                                <option value="general">সাধারণ</option>
-                                <option value="math">গণিত</option>
-                                <option value="science">বিজ্ঞান</option>
-                                <option value="english">ইংরেজি</option>
-                                <option value="bangla">বাংলা</option>
-                            </select>
-                        </div>
-
-                        <div class="button-group">
-                            <button id="addBtn" class="btn btn-primary">
-                                <i class="fas fa-plus-circle"></i> প্রশ্ন যোগ করুন
-                            </button>
-                            <button id="clearCurrentBtn" class="btn btn-secondary">
-                                <i class="fas fa-eraser"></i> মুছুন
-                            </button>
-                        </div>
+                    <input type="file" id="imageInput" accept="image/*">
+                </div>
+                
+                <!-- Image Info -->
+                <div class="image-info" id="imageInfo">
+                    <div class="info-row">
+                        <span class="info-label">File Name:</span>
+                        <span class="info-value" id="fileName">-</span>
                     </div>
-
-                    <!-- MCQ Tab -->
-                    <div id="mcq-tab" class="tab-content" style="display: none;">
-                        <div class="form-group">
-                            <label for="mcqQuestion">
-                                <i class="fas fa-list-ol"></i>
-                                MCQ প্রশ্ন
-                            </label>
-                            <textarea id="mcqQuestion" placeholder="MCQ প্রশ্নটি লিখুন..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                <i class="fas fa-check-circle"></i>
-                                অপশন সমূহ (সঠিক উত্তর চিহ্নিত করুন)
-                            </label>
-                            <div class="options-grid">
-                                <div class="mcq-option-input">
-                                    <div class="option-input">
-                                        <input type="radio" name="correctOption" value="A">
-                                        <input type="text" id="optionA" placeholder="অপশন A">
-                                    </div>
-                                </div>
-                                <div class="mcq-option-input">
-                                    <div class="option-input">
-                                        <input type="radio" name="correctOption" value="B">
-                                        <input type="text" id="optionB" placeholder="অপশন B">
-                                    </div>
-                                </div>
-                                <div class="mcq-option-input">
-                                    <div class="option-input">
-                                        <input type="radio" name="correctOption" value="C">
-                                        <input type="text" id="optionC" placeholder="অপশন C">
-                                    </div>
-                                </div>
-                                <div class="mcq-option-input">
-                                    <div class="option-input">
-                                        <input type="radio" name="correctOption" value="D">
-                                        <input type="text" id="optionD" placeholder="অপশন D">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="button-group">
-                            <button id="addMcqBtn" class="btn btn-primary">
-                                <i class="fas fa-plus-circle"></i> MCQ যোগ করুন
-                            </button>
-                        </div>
+                    <div class="info-row">
+                        <span class="info-label">File Size:</span>
+                        <span class="info-value" id="fileSize">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Dimensions:</span>
+                        <span class="info-value" id="fileDimensions">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Type:</span>
+                        <span class="info-value" id="fileType">-</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Right Panel - Preview -->
-            <div class="panel">
-                <div class="panel-header">
-                    <h2 class="panel-title">
-                        <i class="fas fa-eye"></i>
-                        লাইভ প্রিভিউ
-                    </h2>
-                    <div class="btn-group">
-                        <button class="btn btn-warning" id="refreshPreviewBtn">
-                            <i class="fas fa-sync-alt"></i> রিফ্রেশ
-                        </button>
-                    </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="uploadBtn" disabled>
+                        <span class="loading"></span>
+                        <span>Save Image</span>
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-times"></i>
+                        Clear
+                    </button>
                 </div>
-                <div class="panel-content">
-                    <div class="preview-container">
-                        <div class="pdf-preview" id="pdfPreview">
-                            <!-- PDF Header -->
-                            <div class="pdf-header">
-                                <div class="header-image-container">
-                                    <img src="https://i.ibb.co/PscWrB5k/1000001232.png" 
-                                         alt="PRM Header" 
-                                         class="header-image"
-                                         id="headerImage">
-                                </div>
-                                <div class="prm-title">PRM Question Paper</div>
-                                <div class="paper-info">
-                                    <div>মোট প্রশ্ন: <span id="previewQuestionCount">0</span></div>
-                                    <div>মোট নম্বর: <span id="previewTotalMarks">0</span></div>
-                                    <div>সময়: <span id="previewTime">60</span> মিনিট</div>
-                                </div>
-                            </div>
-
-                            <!-- Questions Container -->
-                            <div id="questionsContainer">
-                                <!-- Questions will be dynamically added here -->
-                            </div>
-                        </div>
-
-                        <!-- Toolbar -->
-                        <div class="toolbar no-print">
-                            <div class="toolbar-group">
-                                <button class="btn btn-primary" id="downloadPdfBtn">
-                                    <i class="fas fa-file-pdf"></i> PDF ডাউনলোড
-                                </button>
-                                <button class="btn btn-success" id="downloadImageBtn">
-                                    <i class="fas fa-image"></i> ছবি ডাউনলোড
-                                </button>
-                            </div>
-                            <div class="toolbar-group">
-                                <button class="btn btn-warning" id="printBtn">
-                                    <i class="fas fa-print"></i> প্রিন্ট
-                                </button>
-                                <button class="btn btn-danger" id="clearAllBtn">
-                                    <i class="fas fa-trash-alt"></i> সব মুছুন
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                
+                <div class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    <span>How to Use</span>
+                </div>
+                <div class="image-info">
+                    <p>1. Upload an image</p>
+                    <p>2. Click on any image in gallery</p>
+                    <p>3. Copy the HTML code</p>
+                    <p>4. Paste into your website</p>
                 </div>
             </div>
-        </div>
-
-        <!-- Settings Panel -->
-        <div class="settings-panel">
-            <h3 class="panel-title">
-                <i class="fas fa-cog"></i>
-                কাস্টমাইজেশন সেটিংস
-            </h3>
             
-            <div class="settings-grid">
-                <div class="setting-item">
-                    <span>
-                        <i class="fas fa-palette"></i>
-                        PDF থিম
-                    </span>
-                    <div class="color-picker">
-                        <div class="color-option active" style="background: #2c3e50;" data-color="default"></div>
-                        <div class="color-option" style="background: #27ae60;" data-color="green"></div>
-                        <div class="color-option" style="background: #e74c3c;" data-color="red"></div>
-                        <div class="color-option" style="background: #9b59b6;" data-color="purple"></div>
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <div class="gallery-header">
+                    <h2>Image Gallery</h2>
+                    <button class="btn btn-secondary" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                </div>
+                
+                <!-- Gallery -->
+                <div class="gallery-grid" id="galleryContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <h3>No Images Found</h3>
+                        <p>Upload your first image using the panel on the left</p>
                     </div>
-                </div>
-
-                <div class="setting-item">
-                    <span>
-                        <i class="fas fa-font"></i>
-                        ফন্ট সাইজ
-                    </span>
-                    <select id="fontSize">
-                        <option value="small">ছোট</option>
-                        <option value="medium" selected>মধ্যম</option>
-                        <option value="large">বড়</option>
-                    </select>
-                </div>
-
-                <div class="setting-item">
-                    <span>
-                        <i class="fas fa-water"></i>
-                        ওয়াটারমার্ক
-                    </span>
-                    <input type="text" id="watermarkText" placeholder="PRM Confidential" maxlength="50">
-                </div>
-
-                <div class="setting-item">
-                    <span>
-                        <i class="fas fa-copyright"></i>
-                        ফুটার টেক্সট
-                    </span>
-                    <input type="text" id="footerText" placeholder="© PRM Education Board" maxlength="100">
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="main-footer">
-            <p>© 2024 PRM Question Paper Generator. সর্বস্বত্ব সংরক্ষিত।</p>
-            <p>প্রশ্নপত্র তৈরি, ব্যবস্থাপনা এবং ডাউনলোডের জন্য পূর্ণাঙ্গ সমাধান।</p>
+        
+        <footer>
+            <p>MART img Drop &copy; 2023 - Simple Image Management System</p>
+            <p>Images are stored locally in your browser</p>
         </footer>
     </div>
 
-    <!-- Loading Modal -->
-    <div id="loadingModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="spinner"></div>
-            <h3 id="loadingMessage" style="text-align: center; margin-top: 20px;">PDF তৈরি করা হচ্ছে...</h3>
-            <div class="progress-bar" style="margin-top: 20px;">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    <!-- Image Preview Modal -->
+    <div class="modal" id="imageModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div class="modal-content" style="background: white; border-radius: 20px; max-width: 600px; width: 100%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+            <div class="modal-header" style="padding: 25px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="modalTitle" style="font-size: 1.5rem; color: var(--dark);">Image Preview</h3>
+                <button class="modal-close" id="modalClose" style="background: none; border: none; font-size: 1.5rem; color: var(--gray); cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 30px; max-height: calc(90vh - 150px); overflow-y: auto;">
+                <div class="image-viewer" style="text-align: center; margin-bottom: 30px;">
+                    <img id="modalImage" src="" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                </div>
+                <div class="image-details" style="background: var(--light); border-radius: 15px; padding: 25px;">
+                    <div class="info-row">
+                        <span class="info-label">File Name:</span>
+                        <span class="info-value" id="modalFileName">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Upload Date:</span>
+                        <span class="info-value" id="modalUploadDate">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">File Size:</span>
+                        <span class="info-value" id="modalFileSize">-</span>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 25px; margin-bottom: 15px; font-size: 1.2rem; font-weight: 600; color: var(--dark); padding-bottom: 10px; border-bottom: 2px solid var(--primary); display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-code"></i>
+                        <span>HTML Code for Your Website</span>
+                    </div>
+                    
+                    <div class="code-snippet" style="background: var(--dark); color: white; padding: 15px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.9rem; margin: 15px 0; overflow-x: auto; position: relative;">
+                        <pre id="htmlCode" style="margin: 0; white-space: pre-wrap;">&lt;img src="[BASE64_DATA]" alt="Image" /&gt;</pre>
+                        <button class="copy-code-btn" data-target="htmlCode" style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    
+                    <div class="action-buttons" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px;">
+                        <button class="btn btn-primary" id="modalDownloadBtn" style="padding: 14px 20px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                        <button class="btn btn-secondary" id="modalDeleteBtn" style="padding: 14px 20px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--light); color: var(--dark); border: 1px solid var(--border);">
+                            <i class="fas fa-trash"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Confirmation Modal -->
-    <div id="confirmModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3><i class="fas fa-question-circle text-warning"></i> নিশ্চিতকরণ</h3>
-            <p id="confirmMessage">আপনি কি নিশ্চিত?</p>
-            <div class="button-group" style="margin-top: 20px;">
-                <button class="btn btn-danger" id="confirmYes">হ্যাঁ</button>
-                <button class="btn btn-secondary" id="confirmNo">না</button>
-            </div>
-        </div>
-    </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
-        // Main Application Object
-        const PRMGenerator = {
-            // Configuration
-            config: {
-                appName: "PRM Question Paper Generator",
-                version: "1.0.0",
-                maxQuestions: 100,
-                maxMarks: 1000,
-                headerImage: "https://i.ibb.co/PscWrB5k/1000001232.png",
-                defaultPDFName: "PRM Question Paper.pdf",
-            },
-
-            // State Management
-            state: {
-                questions: [],
-                currentQuestion: null,
-                settings: {
-                    theme: 'default',
-                    fontSize: 'medium',
-                    watermark: '',
-                    footerText: '',
-                },
-                statistics: {
-                    totalQuestions: 0,
-                    totalMarks: 0,
-                    totalTime: 60,
-                    difficultyLevel: 'easy',
-                },
-                editorState: {
-                    currentTab: 'single',
-                    questionType: 'short',
-                    charCounts: {
-                        question: 0,
-                        answer: 0,
-                    },
-                }
-            },
-
-            // Initialize the application
-            init: function() {
-                this.initDOM();
-                this.initEventListeners();
-                this.loadFromLocalStorage();
-                this.updateStatistics();
-                this.renderQuestions();
-                this.showToast('অ্যাপ্লিকেশন সফলভাবে শুরু হয়েছে!', 'success');
-            },
-
-            // Initialize DOM elements
-            initDOM: function() {
-                this.elements = {
-                    // Input elements
-                    questionInput: document.getElementById('question'),
-                    answerInput: document.getElementById('answer'),
-                    marksInput: document.getElementById('marks'),
-                    difficultySelect: document.getElementById('difficulty'),
-                    categorySelect: document.getElementById('category'),
-                    mcqQuestion: document.getElementById('mcqQuestion'),
-                    optionA: document.getElementById('optionA'),
-                    optionB: document.getElementById('optionB'),
-                    optionC: document.getElementById('optionC'),
-                    optionD: document.getElementById('optionD'),
-
-                    // Buttons
-                    addBtn: document.getElementById('addBtn'),
-                    clearCurrentBtn: document.getElementById('clearCurrentBtn'),
-                    addMcqBtn: document.getElementById('addMcqBtn'),
-                    downloadPdfBtn: document.getElementById('downloadPdfBtn'),
-                    downloadImageBtn: document.getElementById('downloadImageBtn'),
-                    printBtn: document.getElementById('printBtn'),
-                    clearAllBtn: document.getElementById('clearAllBtn'),
-                    refreshPreviewBtn: document.getElementById('refreshPreviewBtn'),
-
-                    // Preview elements
-                    questionsContainer: document.getElementById('questionsContainer'),
-                    previewQuestionCount: document.getElementById('previewQuestionCount'),
-                    previewTotalMarks: document.getElementById('previewTotalMarks'),
-                    previewTime: document.getElementById('previewTime'),
-
-                    // Stats elements
-                    totalQuestions: document.getElementById('totalQuestions'),
-                    totalMarks: document.getElementById('totalMarks'),
-                    estimatedTime: document.getElementById('estimatedTime'),
-                    paperLevel: document.getElementById('paperLevel'),
-
-                    // Settings elements
-                    fontSize: document.getElementById('fontSize'),
-                    watermarkText: document.getElementById('watermarkText'),
-                    footerText: document.getElementById('footerText'),
-
-                    // Character counters
-                    questionChars: document.getElementById('questionChars'),
-                    answerChars: document.getElementById('answerChars'),
-                };
-
-                // Initialize character counters
-                this.updateCharCounters();
-            },
-
-            // Initialize event listeners
-            initEventListeners: function() {
-                // Question input events
-                this.elements.questionInput.addEventListener('input', (e) => {
-                    this.updateCharCounters();
-                    this.editorState.charCounts.question = e.target.value.length;
-                });
-
-                this.elements.answerInput.addEventListener('input', (e) => {
-                    this.updateCharCounters();
-                    this.editorState.charCounts.answer = e.target.value.length;
-                });
-
-                // Add question button
-                this.elements.addBtn.addEventListener('click', () => this.addQuestion());
-
-                // Clear current button
-                this.elements.clearCurrentBtn.addEventListener('click', () => this.clearCurrentInput());
-
-                // Add MCQ button
-                this.elements.addMcqBtn.addEventListener('click', () => this.addMCQQuestion());
-
-                // Download buttons
-                this.elements.downloadPdfBtn.addEventListener('click', () => this.downloadPDF());
-                this.elements.downloadImageBtn.addEventListener('click', () => this.downloadImage());
-                this.elements.printBtn.addEventListener('click', () => this.printPaper());
-                this.elements.clearAllBtn.addEventListener('click', () => this.clearAllQuestions());
-
-                // Refresh preview
-                this.elements.refreshPreviewBtn.addEventListener('click', () => {
-                    this.renderQuestions();
-                    this.showToast('প্রিভিউ রিফ্রেশ করা হয়েছে', 'info');
-                });
-
-                // Settings changes
-                this.elements.fontSize.addEventListener('change', (e) => {
-                    this.state.settings.fontSize = e.target.value;
-                    this.applySettings();
-                });
-
-                this.elements.watermarkText.addEventListener('input', (e) => {
-                    this.state.settings.watermark = e.target.value;
-                });
-
-                this.elements.footerText.addEventListener('input', (e) => {
-                    this.state.settings.footerText = e.target.value;
-                });
-
-                // Tab navigation
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const tab = e.target.dataset.tab;
-                        this.switchTab(tab);
-                    });
-                });
-
-                // Question type selection
-                document.querySelectorAll('.type-option').forEach(option => {
-                    option.addEventListener('click', (e) => {
-                        document.querySelectorAll('.type-option').forEach(opt => {
-                            opt.classList.remove('active');
-                        });
-                        e.target.classList.add('active');
-                        this.editorState.questionType = e.target.dataset.type;
-                    });
-                });
-
-                // Color picker
-                document.querySelectorAll('.color-option').forEach(option => {
-                    option.addEventListener('click', (e) => {
-                        document.querySelectorAll('.color-option').forEach(opt => {
-                            opt.classList.remove('active');
-                        });
-                        e.target.classList.add('active');
-                        this.state.settings.theme = e.target.dataset.color;
-                        this.applySettings();
-                    });
-                });
-
-                // Keyboard shortcuts
-                document.addEventListener('keydown', (e) => {
-                    // Ctrl + Enter to add question
-                    if (e.ctrlKey && e.key === 'Enter') {
-                        e.preventDefault();
-                        if (this.editorState.currentTab === 'single') {
-                            this.addQuestion();
-                        } else if (this.editorState.currentTab === 'mcq') {
-                            this.addMCQQuestion();
-                        }
-                    }
-                });
-
-                // Confirm modal buttons
-                document.getElementById('confirmYes').addEventListener('click', () => {
-                    if (this.confirmCallback) {
-                        this.confirmCallback();
-                    }
-                    document.getElementById('confirmModal').style.display = 'none';
-                });
-
-                document.getElementById('confirmNo').addEventListener('click', () => {
-                    document.getElementById('confirmModal').style.display = 'none';
-                });
-            },
-
-            // Add a new question
-            addQuestion: function() {
-                const question = this.elements.questionInput.value.trim();
-                const answer = this.elements.answerInput.value.trim();
-                const marks = parseInt(this.elements.marksInput.value) || 10;
-                const difficulty = this.elements.difficultySelect.value;
-                const category = this.elements.categorySelect.value;
-                const type = this.editorState.questionType;
-
-                // Validation
-                if (!question || !answer) {
-                    this.showToast('প্রশ্ন এবং উত্তর উভয়ই প্রয়োজন', 'error');
-                    return;
-                }
-
-                if (marks < 1 || marks > 100) {
-                    this.showToast('নম্বর ১ থেকে ১০০ এর মধ্যে হতে হবে', 'error');
-                    return;
-                }
-
-                // Create question object
-                const questionObj = {
-                    id: Date.now(),
-                    question: question,
-                    answer: answer,
-                    marks: marks,
-                    difficulty: difficulty,
-                    category: category,
-                    type: type,
-                    createdAt: new Date().toISOString(),
-                };
-
-                // Add to state
-                this.state.questions.push(questionObj);
-                this.state.currentQuestion = questionObj;
-
-                // Clear input
-                this.clearCurrentInput();
-
-                // Update UI
-                this.updateStatistics();
-                this.renderQuestions();
-                this.showToast('প্রশ্ন সফলভাবে যোগ করা হয়েছে', 'success');
-
-                // Save
-                this.saveToLocalStorage();
-            },
-
-            // Add MCQ question
-            addMCQQuestion: function() {
-                const question = this.elements.mcqQuestion.value.trim();
-                const optionA = this.elements.optionA.value.trim();
-                const optionB = this.elements.optionB.value.trim();
-                const optionC = this.elements.optionC.value.trim();
-                const optionD = this.elements.optionD.value.trim();
-                const correctOption = document.querySelector('input[name="correctOption"]:checked');
-
-                // Validation
-                if (!question) {
-                    this.showToast('MCQ প্রশ্ন প্রয়োজন', 'error');
-                    return;
-                }
-
-                if (!optionA || !optionB || !optionC || !optionD) {
-                    this.showToast('সকল চারটি অপশন প্রয়োজন', 'error');
-                    return;
-                }
-
-                if (!correctOption) {
-                    this.showToast('সঠিক উত্তর চিহ্নিত করুন', 'error');
-                    return;
-                }
-
-                // Create MCQ object
-                const mcqObj = {
-                    id: Date.now(),
-                    question: question,
-                    type: 'mcq',
-                    options: {
-                        A: optionA,
-                        B: optionB,
-                        C: optionC,
-                        D: optionD,
-                    },
-                    correctAnswer: correctOption.value,
-                    marks: 1,
-                    difficulty: 'medium',
-                    category: 'general',
-                    createdAt: new Date().toISOString(),
-                };
-
-                // Add to state
-                this.state.questions.push(mcqObj);
-
-                // Clear input
-                this.elements.mcqQuestion.value = '';
-                this.elements.optionA.value = '';
-                this.elements.optionB.value = '';
-                this.elements.optionC.value = '';
-                this.elements.optionD.value = '';
-                document.querySelectorAll('input[name="correctOption"]').forEach(radio => {
-                    radio.checked = false;
-                });
-
-                // Update UI
-                this.updateStatistics();
-                this.renderQuestions();
-                this.showToast('MCQ প্রশ্ন সফলভাবে যোগ করা হয়েছে', 'success');
-            },
-
-            // Render questions in preview
-            renderQuestions: function() {
-                const container = this.elements.questionsContainer;
-                container.innerHTML = '';
-
-                if (this.state.questions.length === 0) {
-                    container.innerHTML = `
-                        <div class="question-card" style="text-align: center; padding: 50px;">
-                            <i class="fas fa-question-circle fa-4x" style="color: #ddd; margin-bottom: 20px;"></i>
-                            <h3 style="color: #999;">কোন প্রশ্ন নেই</h3>
-                            <p>বাম পাশে প্রশ্ন যোগ করুন এবং এখানে প্রিভিউ দেখুন</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                this.state.questions.forEach((q, index) => {
-                    const questionCard = document.createElement('div');
-                    questionCard.className = 'question-card';
-                    questionCard.dataset.id = q.id;
-
-                    // Bengali numbers
-                    const bengaliNumbers = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০'];
-                    const bengaliNumber = bengaliNumbers[index] || (index + 1);
-
-                    let questionHTML = `
-                        <div class="question-number">${bengaliNumber}</div>
-                        <div class="question-text">${this.escapeHtml(q.question)}</div>
-                    `;
-
-                    if (q.type === 'mcq') {
-                        questionHTML += `
-                            <div class="mcq-options">
-                                <div class="mcq-option ${q.correctAnswer === 'A' ? 'correct' : ''}">
-                                    <span class="option-label">ক</span>
-                                    <span>${this.escapeHtml(q.options.A)}</span>
-                                </div>
-                                <div class="mcq-option ${q.correctAnswer === 'B' ? 'correct' : ''}">
-                                    <span class="option-label">খ</span>
-                                    <span>${this.escapeHtml(q.options.B)}</span>
-                                </div>
-                                <div class="mcq-option ${q.correctAnswer === 'C' ? 'correct' : ''}">
-                                    <span class="option-label">গ</span>
-                                    <span>${this.escapeHtml(q.options.C)}</span>
-                                </div>
-                                <div class="mcq-option ${q.correctAnswer === 'D' ? 'correct' : ''}">
-                                    <span class="option-label">ঘ</span>
-                                    <span>${this.escapeHtml(q.options.D)}</span>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        questionHTML += `
-                            <div class="answer-text">${this.formatAnswer(q.answer)}</div>
-                        `;
-                    }
-
-                    // Metadata
-                    const difficultyLabels = {
-                        'easy': 'সহজ',
-                        'medium': 'মধ্যম',
-                        'hard': 'কঠিন',
-                        'very-hard': 'অত্যন্ত কঠিন',
-                    };
-
-                    const categoryLabels = {
-                        'general': 'সাধারণ',
-                        'math': 'গণিত',
-                        'science': 'বিজ্ঞান',
-                        'english': 'ইংরেজি',
-                        'bangla': 'বাংলা',
-                    };
-
-                    questionHTML += `
-                        <div class="question-meta">
-                            <div>
-                                <span class="badge badge-primary">${categoryLabels[q.category] || q.category}</span>
-                                <span class="badge badge-warning">${difficultyLabels[q.difficulty] || q.difficulty}</span>
-                                <span class="marks-section">${q.marks} নম্বর</span>
-                            </div>
-                            <div>
-                                <button class="btn btn-sm btn-danger" onclick="PRMGenerator.deleteQuestion('${q.id}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                                <button class="btn btn-sm btn-warning" onclick="PRMGenerator.editQuestion('${q.id}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-
-                    questionCard.innerHTML = questionHTML;
-                    container.appendChild(questionCard);
-                });
-
-                // Update preview statistics
-                this.elements.previewQuestionCount.textContent = this.state.questions.length;
-                this.elements.previewTotalMarks.textContent = this.state.statistics.totalMarks;
-                this.elements.previewTime.textContent = this.state.statistics.totalTime;
-            },
-
-            // Update statistics
-            updateStatistics: function() {
-                const totalQuestions = this.state.questions.length;
-                const totalMarks = this.state.questions.reduce((sum, q) => sum + q.marks, 0);
-                const totalTime = this.state.questions.reduce((sum, q) => sum + (q.marks * 2), 0);
-                
-                // Calculate difficulty level
-                const difficulties = this.state.questions.map(q => q.difficulty);
-                const hardCount = difficulties.filter(d => d === 'hard' || d === 'very-hard').length;
-                const difficultyRatio = totalQuestions > 0 ? hardCount / totalQuestions : 0;
-                
-                let paperLevel = 'সহজ';
-                if (difficultyRatio > 0.7) paperLevel = 'অত্যন্ত কঠিন';
-                else if (difficultyRatio > 0.5) paperLevel = 'কঠিন';
-                else if (difficultyRatio > 0.3) paperLevel = 'মধ্যম';
-
-                // Update state
-                this.state.statistics = {
-                    totalQuestions,
-                    totalMarks,
-                    totalTime: Math.ceil(totalTime / 10) * 10, // Round to nearest 10
-                    difficultyLevel: paperLevel,
-                };
-
-                // Update UI
-                this.elements.totalQuestions.textContent = totalQuestions;
-                this.elements.totalMarks.textContent = totalMarks;
-                this.elements.estimatedTime.textContent = this.state.statistics.totalTime;
-                this.elements.paperLevel.textContent = paperLevel;
-            },
-
-            // Format answer text
-            formatAnswer: function(answer) {
-                // Replace newlines with <br> tags
-                return this.escapeHtml(answer).replace(/\n/g, '<br>');
-            },
-
-            // Escape HTML to prevent XSS
-            escapeHtml: function(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            },
-
-            // Update character counters
-            updateCharCounters: function() {
-                this.elements.questionChars.textContent = this.elements.questionInput.value.length;
-                this.elements.answerChars.textContent = this.elements.answerInput.value.length;
-            },
-
-            // Clear current input
-            clearCurrentInput: function() {
-                this.elements.questionInput.value = '';
-                this.elements.answerInput.value = '';
-                this.elements.marksInput.value = '10';
-                this.updateCharCounters();
-            },
-
-            // Clear all questions
-            clearAllQuestions: function() {
-                this.showConfirm('আপনি কি সব প্রশ্ন মুছতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।', () => {
-                    this.state.questions = [];
-                    this.updateStatistics();
-                    this.renderQuestions();
-                    this.showToast('সব প্রশ্ন মুছে ফেলা হয়েছে', 'success');
-                    this.saveToLocalStorage();
-                });
-            },
-
-            // Delete a specific question
-            deleteQuestion: function(id) {
-                this.showConfirm('আপনি কি এই প্রশ্নটি মুছতে চান?', () => {
-                    this.state.questions = this.state.questions.filter(q => q.id !== id);
-                    this.updateStatistics();
-                    this.renderQuestions();
-                    this.showToast('প্রশ্ন মুছে ফেলা হয়েছে', 'success');
-                    this.saveToLocalStorage();
-                });
-            },
-
-            // Edit a question
-            editQuestion: function(id) {
-                const question = this.state.questions.find(q => q.id === id);
-                if (!question) return;
-
-                // Populate form with question data
-                if (question.type === 'mcq') {
-                    this.switchTab('mcq');
-                    this.elements.mcqQuestion.value = question.question;
-                    this.elements.optionA.value = question.options.A;
-                    this.elements.optionB.value = question.options.B;
-                    this.elements.optionC.value = question.options.C;
-                    this.elements.optionD.value = question.options.D;
-                    document.querySelector(`input[name="correctOption"][value="${question.correctAnswer}"]`).checked = true;
-                } else {
-                    this.switchTab('single');
-                    this.elements.questionInput.value = question.question;
-                    this.elements.answerInput.value = question.answer;
-                    this.elements.marksInput.value = question.marks;
-                    this.elements.difficultySelect.value = question.difficulty;
-                    this.elements.categorySelect.value = question.category;
-                    
-                    // Set question type
-                    document.querySelectorAll('.type-option').forEach(opt => {
-                        opt.classList.remove('active');
-                        if (opt.dataset.type === question.type) {
-                            opt.classList.add('active');
-                        }
-                    });
-                    this.editorState.questionType = question.type;
-                }
-
-                // Remove the question
-                this.state.questions = this.state.questions.filter(q => q.id !== id);
-
-                this.showToast('প্রশ্ন সম্পাদনার জন্য প্রস্তুত', 'info');
-            },
-
-            // Switch between tabs
-            switchTab: function(tab) {
-                // Update UI
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.dataset.tab === tab) {
-                        btn.classList.add('active');
-                    }
-                });
-
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.style.display = 'none';
-                });
-
-                document.getElementById(`${tab}-tab`).style.display = 'block';
-                this.editorState.currentTab = tab;
-            },
-
-            // Apply settings to preview
-            applySettings: function() {
-                const preview = document.getElementById('pdfPreview');
-                
-                // Apply font size
-                preview.style.fontSize = this.getFontSizeValue(this.state.settings.fontSize);
-                
-                // Apply theme colors
-                const themeColors = {
-                    'default': { primary: '#2c3e50', secondary: '#4a6491' },
-                    'green': { primary: '#27ae60', secondary: '#2ecc71' },
-                    'red': { primary: '#e74c3c', secondary: '#c0392b' },
-                    'purple': { primary: '#9b59b6', secondary: '#8e44ad' },
-                };
-
-                const colors = themeColors[this.state.settings.theme] || themeColors.default;
-                
-                // Update CSS variables
-                document.documentElement.style.setProperty('--primary-color', colors.primary);
-                document.documentElement.style.setProperty('--secondary-color', colors.secondary);
-                
-                this.showToast('সেটিংস প্রয়োগ করা হয়েছে', 'success');
-            },
-
-            // Get font size value
-            getFontSizeValue: function(size) {
-                const sizes = {
-                    'small': '14px',
-                    'medium': '16px',
-                    'large': '18px',
-                };
-                return sizes[size] || sizes.medium;
-            },
-
-            // Create printable content for printing
-            createPrintableContent: function() {
-                const printableContent = document.getElementById('printable-content');
-                printableContent.innerHTML = '';
-                
-                // Create a container for printable content
-                const printContainer = document.createElement('div');
-                printContainer.style.padding = '20px';
-                printContainer.style.fontFamily = 'Arial, sans-serif';
-                printContainer.style.lineHeight = '1.6';
-                
-                // Add header
-                const header = document.createElement('div');
-                header.style.textAlign = 'center';
-                header.style.marginBottom = '30px';
-                header.style.borderBottom = '3px solid #2c3e50';
-                header.style.paddingBottom = '20px';
-                
-                // Add image
-                const img = document.createElement('img');
-                img.src = this.config.headerImage;
-                img.alt = 'PRM Header';
-                img.style.maxWidth = '200px';
-                img.style.height = 'auto';
-                img.style.marginBottom = '10px';
-                
-                // Add title
-                const title = document.createElement('h1');
-                title.textContent = 'PRM Question Paper';
-                title.style.color = '#2c3e50';
-                title.style.margin = '10px 0';
-                title.style.fontSize = '28px';
-                
-                // Add paper info
-                const info = document.createElement('div');
-                info.style.display = 'flex';
-                info.style.justifyContent = 'space-between';
-                info.style.padding = '10px 20px';
-                info.style.backgroundColor = '#f8f9fa';
-                info.style.borderRadius = '8px';
-                info.style.marginTop = '10px';
-                info.style.fontSize = '14px';
-                info.style.color = '#666';
-                
-                info.innerHTML = `
-                    <div>মোট প্রশ্ন: ${this.state.questions.length}</div>
-                    <div>মোট নম্বর: ${this.state.statistics.totalMarks}</div>
-                    <div>সময়: ${this.state.statistics.totalTime} মিনিট</div>
-                `;
-                
-                header.appendChild(img);
-                header.appendChild(title);
-                header.appendChild(info);
-                printContainer.appendChild(header);
-                
-                // Add questions
-                this.state.questions.forEach((q, index) => {
-                    const questionCard = document.createElement('div');
-                    questionCard.style.marginBottom = '25px';
-                    questionCard.style.padding = '20px';
-                    questionCard.style.border = '1px solid #ddd';
-                    questionCard.style.borderRadius = '8px';
-                    questionCard.style.borderLeft = '5px solid #3498db';
-                    questionCard.style.pageBreakInside = 'avoid';
-                    
-                    // Bengali numbers
-                    const bengaliNumbers = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০'];
-                    const bengaliNumber = bengaliNumbers[index] || (index + 1);
-                    
-                    let questionHTML = `
-                        <div style="position: relative; margin-bottom: 15px;">
-                            <div style="position: absolute; left: -15px; top: 0; background: #3498db; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                ${bengaliNumber}
-                            </div>
-                            <div style="font-size: 18px; font-weight: 600; color: #2c3e50; margin-left: 25px;">
-                                ${this.escapeHtml(q.question)}
-                            </div>
-                        </div>
-                    `;
-                    
-                    if (q.type === 'mcq') {
-                        questionHTML += `
-                            <div style="margin-left: 25px; margin-top: 15px;">
-                                <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0;">
-                                    <span style="font-weight: 600; color: #2c3e50; min-width: 30px;">ক</span>
-                                    <span>${this.escapeHtml(q.options.A)}</span>
-                                </div>
-                                <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0;">
-                                    <span style="font-weight: 600; color: #2c3e50; min-width: 30px;">খ</span>
-                                    <span>${this.escapeHtml(q.options.B)}</span>
-                                </div>
-                                <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0;">
-                                    <span style="font-weight: 600; color: #2c3e50; min-width: 30px;">গ</span>
-                                    <span>${this.escapeHtml(q.options.C)}</span>
-                                </div>
-                                <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e0e0e0;">
-                                    <span style="font-weight: 600; color: #2c3e50; min-width: 30px;">ঘ</span>
-                                    <span>${this.escapeHtml(q.options.D)}</span>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        questionHTML += `
-                            <div style="margin-left: 25px; padding-left: 15px; border-left: 2px solid #e0e0e0; margin-top: 15px; font-size: 16px; color: #444;">
-                                ${this.formatAnswer(q.answer)}
-                            </div>
-                        `;
-                    }
-                    
-                    // Add footer with marks
-                    questionHTML += `
-                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e0e0e0; font-size: 14px; color: #666; display: flex; justify-content: space-between;">
-                            <div>
-                                <span style="background: #f39c12; color: white; padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: 600;">
-                                    ${q.marks} নম্বর
-                                </span>
-                            </div>
-                        </div>
-                    `;
-                    
-                    questionCard.innerHTML = questionHTML;
-                    printContainer.appendChild(questionCard);
-                });
-                
-                // Add footer text if set
-                if (this.state.settings.footerText) {
-                    const footer = document.createElement('div');
-                    footer.style.textAlign = 'center';
-                    footer.style.marginTop = '40px';
-                    footer.style.paddingTop = '20px';
-                    footer.style.borderTop = '1px solid #ddd';
-                    footer.style.color = '#666';
-                    footer.style.fontSize = '14px';
-                    footer.textContent = this.state.settings.footerText;
-                    printContainer.appendChild(footer);
-                }
-                
-                printableContent.appendChild(printContainer);
-            },
-
-            // Download PDF
-            downloadPDF: function() {
-                if (this.state.questions.length === 0) {
-                    this.showToast('কোন প্রশ্ন নেই', 'error');
-                    return;
-                }
-
-                this.showLoading('PDF তৈরি করা হচ্ছে...');
-
-                // Create printable content first
-                this.createPrintableContent();
-                
-                const printableContent = document.getElementById('printable-content');
-                
-                // Show the printable content temporarily
-                printableContent.style.display = 'block';
-                
-                html2canvas(printableContent, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    logging: false,
-                    onclone: function(clonedDoc) {
-                        clonedDoc.body.style.backgroundColor = '#ffffff';
-                    }
-                }).then(canvas => {
-                    const { jsPDF } = window.jspdf;
-                    const doc = new jsPDF({
-                        orientation: 'portrait',
-                        unit: 'mm',
-                        format: 'a4',
-                    });
-
-                    const imgData = canvas.toDataURL('image/png');
-                    const imgWidth = 190;
-                    const imgHeight = canvas.height * imgWidth / canvas.width;
-                    
-                    let position = 10;
-                    let heightLeft = imgHeight;
-                    const pageHeight = 277;
-
-                    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-
-                    // Add additional pages if needed
-                    while (heightLeft >= 0) {
-                        position = heightLeft - imgHeight + 10;
-                        doc.addPage();
-                        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                        heightLeft -= pageHeight;
-                    }
-
-                    // Add metadata
-                    doc.setProperties({
-                        title: 'PRM Question Paper',
-                        subject: 'Question Paper',
-                        author: 'PRM Generator',
-                        keywords: 'question, paper, prm',
-                    });
-
-                    // Save PDF
-                    doc.save(this.config.defaultPDFName);
-                    
-                    // Hide printable content
-                    printableContent.style.display = 'none';
-                    
-                    this.hideLoading();
-                    this.showToast('PDF সফলভাবে ডাউনলোড হয়েছে', 'success');
-                }).catch(error => {
-                    console.error('PDF Generation Error:', error);
-                    this.hideLoading();
-                    this.showToast('PDF তৈরি করতে সমস্যা হয়েছে', 'error');
-                    
-                    // Hide printable content on error
-                    printableContent.style.display = 'none';
-                });
-            },
-
-            // Download as image
-            downloadImage: function() {
-                if (this.state.questions.length === 0) {
-                    this.showToast('কোন প্রশ্ন নেই', 'error');
-                    return;
-                }
-
-                this.showLoading('ছবি তৈরি করা হচ্ছে...');
-
-                // Create printable content first
-                this.createPrintableContent();
-                
-                const printableContent = document.getElementById('printable-content');
-                
-                // Show the printable content temporarily
-                printableContent.style.display = 'block';
-                
-                html2canvas(printableContent, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    logging: false,
-                    scrollY: -window.scrollY,
-                    windowHeight: printableContent.scrollHeight,
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = 'PRM_Question_Paper.png';
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                    
-                    // Hide printable content
-                    printableContent.style.display = 'none';
-                    
-                    this.hideLoading();
-                    this.showToast('ছবি সফলভাবে ডাউনলোড হয়েছে', 'success');
-                }).catch(error => {
-                    console.error('Image Generation Error:', error);
-                    this.hideLoading();
-                    this.showToast('ছবি তৈরি করতে সমস্যা হয়েছে', 'error');
-                    
-                    // Hide printable content on error
-                    printableContent.style.display = 'none';
-                });
-            },
-
-            // Print paper
-            printPaper: function() {
-                if (this.state.questions.length === 0) {
-                    this.showToast('কোন প্রশ্ন নেই', 'error');
-                    return;
-                }
-
-                this.createPrintableContent();
-                
-                // Show the printable content
-                const printableContent = document.getElementById('printable-content');
-                printableContent.style.display = 'block';
-                
-                // Trigger print
-                window.print();
-                
-                // Hide printable content after print
-                setTimeout(() => {
-                    printableContent.style.display = 'none';
-                }, 1000);
-            },
-
-            // Load from localStorage
-            loadFromLocalStorage: function() {
-                try {
-                    const saved = localStorage.getItem('prm_question_paper');
-                    if (saved) {
-                        const data = JSON.parse(saved);
-                        
-                        if (data.questions) this.state.questions = data.questions;
-                        if (data.settings) this.state.settings = { ...this.state.settings, ...data.settings };
-                        
-                        this.showToast('পূর্বের ডেটা লোড করা হয়েছে', 'info');
-                    }
-                } catch (error) {
-                    console.error('Error loading from localStorage:', error);
-                }
-            },
-
-            // Save to localStorage
-            saveToLocalStorage: function() {
-                try {
-                    const data = {
-                        questions: this.state.questions,
-                        settings: this.state.settings,
-                        lastSaved: new Date().toISOString(),
-                    };
-                    
-                    localStorage.setItem('prm_question_paper', JSON.stringify(data));
-                } catch (error) {
-                    console.error('Error saving to localStorage:', error);
-                }
-            },
-
-            // Show toast notification
-            showToast: function(message, type = 'info') {
-                const toast = document.getElementById('toast');
-                toast.textContent = message;
-                toast.style.display = 'block';
-                
-                // Set color based on type
-                const colors = {
-                    'success': '#27ae60',
-                    'error': '#e74c3c',
-                    'warning': '#f39c12',
-                    'info': '#3498db',
-                };
-                
-                toast.style.background = colors[type] || colors.info;
-                
-                // Auto hide
-                setTimeout(() => {
-                    toast.style.display = 'none';
-                }, 3000);
-            },
-
-            // Show loading modal
-            showLoading: function(message) {
-                document.getElementById('loadingMessage').textContent = message;
-                document.getElementById('loadingModal').style.display = 'flex';
-                
-                // Simulate progress
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += Math.random() * 10;
-                    if (progress > 90) progress = 90;
-                    document.getElementById('progressFill').style.width = `${progress}%`;
-                }, 200);
-                
-                this.currentProgressInterval = interval;
-            },
-
-            // Hide loading modal
-            hideLoading: function() {
-                document.getElementById('loadingModal').style.display = 'none';
-                document.getElementById('progressFill').style.width = '0%';
-                
-                if (this.currentProgressInterval) {
-                    clearInterval(this.currentProgressInterval);
-                }
-            },
-
-            // Show confirmation dialog
-            showConfirm: function(message, callback) {
-                document.getElementById('confirmMessage').textContent = message;
-                document.getElementById('confirmModal').style.display = 'flex';
-                this.confirmCallback = callback;
-            },
+        // Initialize variables
+        let allImages = [];
+        let selectedFile = null;
+        let base64String = '';
+        
+        // DOM elements
+        const elements = {
+            imageInput: document.getElementById('imageInput'),
+            dropArea: document.getElementById('dropArea'),
+            uploadBtn: document.getElementById('uploadBtn'),
+            clearBtn: document.getElementById('clearBtn'),
+            refreshBtn: document.getElementById('refreshBtn'),
+            galleryContainer: document.getElementById('galleryContainer'),
+            totalImages: document.getElementById('totalImages'),
+            totalSize: document.getElementById('totalSize'),
+            imageInfo: document.getElementById('imageInfo'),
+            imageModal: document.getElementById('imageModal'),
+            modalClose: document.getElementById('modalClose')
         };
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', () => {
-            PRMGenerator.init();
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('MART img Drop initialized');
+            
+            // Initialize Toastr
+            toastr.options = {
+                positionClass: 'toast-top-right',
+                progressBar: true,
+                closeButton: true,
+                timeOut: 3000
+            };
+            
+            // Load images from local storage
+            loadAllImages();
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            toastr.info('Welcome to MART img Drop! Images are saved locally in your browser.');
         });
-
-        // Make PRMGenerator available globally for inline onclick handlers
-        window.PRMGenerator = PRMGenerator;
+        
+        function setupEventListeners() {
+            // Upload area events
+            elements.imageInput.addEventListener('change', handleFileSelect);
+            elements.dropArea.addEventListener('click', () => elements.imageInput.click());
+            
+            // Drag and drop events
+            elements.dropArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                elements.dropArea.style.borderColor = '#4cc9f0';
+                elements.dropArea.style.backgroundColor = '#e8f7ff';
+            });
+            
+            elements.dropArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                elements.dropArea.style.borderColor = '#4361ee';
+                elements.dropArea.style.backgroundColor = 'white';
+            });
+            
+            elements.dropArea.addEventListener('drop', handleDrop);
+            
+            // Button events
+            elements.uploadBtn.addEventListener('click', saveImage);
+            elements.clearBtn.addEventListener('click', clearSelection);
+            elements.refreshBtn.addEventListener('click', () => {
+                loadAllImages();
+                toastr.info('Gallery refreshed');
+            });
+            
+            // Modal events
+            elements.modalClose.addEventListener('click', () => {
+                elements.imageModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === elements.imageModal) {
+                    elements.imageModal.style.display = 'none';
+                }
+            });
+            
+            // Copy code button
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.copy-code-btn')) {
+                    const button = e.target.closest('.copy-code-btn');
+                    const targetId = button.dataset.target;
+                    const codeElement = document.getElementById(targetId);
+                    copyToClipboard(codeElement.textContent);
+                    toastr.success('HTML code copied to clipboard!');
+                }
+            });
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            elements.dropArea.style.borderColor = '#4361ee';
+            elements.dropArea.style.backgroundColor = 'white';
+            
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                handleFile(files[0]);
+            }
+        }
+        
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+        
+        function handleFile(file) {
+            // Check if file is an image
+            if (!file.type.match('image.*')) {
+                toastr.error('Please select an image file (JPG, PNG, GIF, etc.)');
+                return;
+            }
+            
+            // Check file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+                toastr.error('File size exceeds 5MB limit. Please choose a smaller image.');
+                return;
+            }
+            
+            selectedFile = file;
+            
+            // Update file info
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileType').textContent = file.type;
+            
+            // Show image info section
+            elements.imageInfo.classList.add('show');
+            
+            // Preview image and get dimensions
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    document.getElementById('fileDimensions').textContent = `${img.width} x ${img.height} pixels`;
+                    
+                    // Convert to base64
+                    base64String = e.target.result;
+                    
+                    // Enable upload button
+                    elements.uploadBtn.disabled = false;
+                };
+                img.onerror = function() {
+                    document.getElementById('fileDimensions').textContent = 'Unknown';
+                    base64String = e.target.result;
+                    elements.uploadBtn.disabled = false;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function saveImage() {
+            if (!selectedFile || !base64String) {
+                toastr.error('Please select an image first.');
+                return;
+            }
+            
+            console.log('Saving image...');
+            
+            // Disable upload button and show loading
+            elements.uploadBtn.disabled = true;
+            elements.uploadBtn.querySelector('.loading').classList.add('active');
+            
+            // Create a unique ID for the image
+            const imageId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+            
+            // Prepare the data object
+            const imageData = {
+                id: imageId,
+                fileName: selectedFile.name,
+                fileType: selectedFile.type,
+                fileSize: selectedFile.size,
+                base64: base64String,
+                uploadTime: new Date().toISOString(),
+                dimensions: document.getElementById('fileDimensions').textContent
+            };
+            
+            // Save to local storage
+            saveToLocalStorage(imageData);
+        }
+        
+        function saveToLocalStorage(imageData) {
+            try {
+                // Get existing images from local storage
+                let storedImages = JSON.parse(localStorage.getItem('martImgDropImages')) || [];
+                
+                // Add new image
+                storedImages.unshift(imageData);
+                
+                // Keep only last 100 images to prevent storage issues
+                if (storedImages.length > 100) {
+                    storedImages = storedImages.slice(0, 100);
+                    toastr.warning('Only keeping last 100 images to save space');
+                }
+                
+                // Save back to local storage
+                localStorage.setItem('martImgDropImages', JSON.stringify(storedImages));
+                
+                console.log('Image saved to local storage');
+                toastr.success(`"${selectedFile.name}" saved successfully!`);
+                
+                // Add to local array
+                allImages = storedImages;
+                updateStats();
+                displayImages();
+                
+                // Reset form
+                clearSelection();
+                
+            } catch (error) {
+                console.error('Error saving to local storage:', error);
+                toastr.error('Failed to save image. Please try again.');
+            } finally {
+                elements.uploadBtn.querySelector('.loading').classList.remove('active');
+            }
+        }
+        
+        function loadAllImages() {
+            console.log('Loading images from local storage...');
+            
+            try {
+                const storedImages = JSON.parse(localStorage.getItem('martImgDropImages')) || [];
+                allImages = storedImages;
+                
+                console.log(`Loaded ${allImages.length} images from local storage`);
+                updateStats();
+                displayImages();
+                
+            } catch (error) {
+                console.error('Error loading from local storage:', error);
+                allImages = [];
+                updateStats();
+                displayImages();
+            }
+        }
+        
+        function updateStats() {
+            // Update total images
+            elements.totalImages.textContent = allImages.length;
+            
+            // Update total size
+            const totalBytes = allImages.reduce((sum, img) => sum + (img.fileSize || 0), 0);
+            elements.totalSize.textContent = formatFileSize(totalBytes);
+        }
+        
+        function displayImages() {
+            const gallery = elements.galleryContainer;
+            
+            if (allImages.length === 0) {
+                gallery.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <h3>No Images Found</h3>
+                        <p>Upload your first image using the panel on the left</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            gallery.innerHTML = '';
+            
+            allImages.forEach(image => {
+                const card = createImageCard(image);
+                gallery.appendChild(card);
+            });
+        }
+        
+        function createImageCard(image) {
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            card.dataset.id = image.id;
+            
+            const uploadDate = new Date(image.uploadTime);
+            const formattedDate = uploadDate.toLocaleDateString();
+            
+            card.innerHTML = `
+                <div class="card-img">
+                    <img src="${image.base64}" alt="${image.fileName}" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <div class="card-title" title="${image.fileName}">${truncateText(image.fileName, 25)}</div>
+                    <div class="card-meta">
+                        <span>${formattedDate}</span>
+                        <span>${formatFileSize(image.fileSize)}</span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="card-btn view">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="card-btn download">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <button class="card-btn copy">
+                            <i class="fas fa-copy"></i> Copy Code
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners to card buttons
+            const viewBtn = card.querySelector('.card-btn.view');
+            const downloadBtn = card.querySelector('.card-btn.download');
+            const copyBtn = card.querySelector('.card-btn.copy');
+            
+            viewBtn.addEventListener('click', () => openImageModal(image));
+            downloadBtn.addEventListener('click', () => downloadImage(image));
+            copyBtn.addEventListener('click', () => copyImageLink(image));
+            
+            return card;
+        }
+        
+        function openImageModal(image) {
+            // Set modal content
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = image.base64;
+            modalImage.alt = image.fileName;
+            
+            document.getElementById('modalTitle').textContent = image.fileName;
+            document.getElementById('modalFileName').textContent = image.fileName;
+            
+            const uploadDate = new Date(image.uploadTime);
+            document.getElementById('modalUploadDate').textContent = uploadDate.toLocaleString();
+            
+            document.getElementById('modalFileSize').textContent = formatFileSize(image.fileSize);
+            
+            // Update HTML code snippet
+            document.getElementById('htmlCode').textContent = `<img src="${image.base64}" alt="${image.fileName}" />`;
+            
+            // Update modal button events
+            document.getElementById('modalDownloadBtn').onclick = () => downloadImage(image);
+            document.getElementById('modalDeleteBtn').onclick = () => deleteImage(image.id);
+            
+            // Show modal
+            elements.imageModal.style.display = 'flex';
+        }
+        
+        function downloadImage(image) {
+            const link = document.createElement('a');
+            link.href = image.base64;
+            link.download = image.fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            toastr.success(`Downloading "${image.fileName}"`);
+        }
+        
+        function copyImageLink(image) {
+            const htmlCode = `<img src="${image.base64}" alt="${image.fileName}" />`;
+            copyToClipboard(htmlCode, 'HTML code');
+        }
+        
+        function deleteImage(imageId) {
+            if (!confirm('Are you sure you want to delete this image?')) {
+                return;
+            }
+            
+            // Remove from local storage
+            let storedImages = JSON.parse(localStorage.getItem('martImgDropImages')) || [];
+            storedImages = storedImages.filter(img => img.id !== imageId);
+            localStorage.setItem('martImgDropImages', JSON.stringify(storedImages));
+            
+            // Update local array
+            allImages = storedImages;
+            updateStats();
+            displayImages();
+            
+            // Close modal
+            elements.imageModal.style.display = 'none';
+            
+            toastr.success('Image deleted successfully');
+        }
+        
+        function copyToClipboard(text, type = 'Text') {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    toastr.success(`${type} copied to clipboard!`);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    toastr.error('Failed to copy to clipboard');
+                });
+        }
+        
+        function clearSelection() {
+            selectedFile = null;
+            base64String = '';
+            
+            // Reset UI
+            elements.imageInput.value = '';
+            elements.imageInfo.classList.remove('show');
+            elements.uploadBtn.disabled = true;
+            
+            // Reset upload area
+            elements.dropArea.style.borderColor = '#4361ee';
+            elements.dropArea.style.backgroundColor = 'white';
+        }
+        
+        // Utility functions
+        function formatFileSize(bytes) {
+            if (!bytes || bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function truncateText(text, maxLength) {
+            if (!text || text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
     </script>
 </body>
 </html>
