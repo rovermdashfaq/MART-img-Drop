@@ -135,6 +135,40 @@
             display: none;
         }
         
+        /* Rename Option */
+        .rename-option {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .rename-option.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .rename-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .rename-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .rename-label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
         /* Image Info */
         .image-info {
             background: white;
@@ -299,11 +333,13 @@
         
         .card-actions {
             display: flex;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         
         .card-btn {
             flex: 1;
+            min-width: 70px;
             padding: 8px 12px;
             border-radius: 8px;
             border: none;
@@ -323,22 +359,40 @@
             background: #e9ecef;
         }
         
-        .card-btn.download {
+        .card-btn.view {
             background: #e7f5ff;
             color: var(--primary);
         }
         
-        .card-btn.download:hover {
+        .card-btn.view:hover {
             background: #d0ebff;
         }
         
-        .card-btn.copy {
+        .card-btn.download {
             background: #e6fcf5;
             color: var(--success);
         }
         
-        .card-btn.copy:hover {
+        .card-btn.download:hover {
             background: #c3fae8;
+        }
+        
+        .card-btn.copy-base64 {
+            background: #fff5f5;
+            color: #e8590c;
+        }
+        
+        .card-btn.copy-base64:hover {
+            background: #ffe3e3;
+        }
+        
+        .card-btn.copy-link {
+            background: #f8f0ff;
+            color: #9c36b5;
+        }
+        
+        .card-btn.copy-link:hover {
+            background: #e9d5ff;
         }
         
         .card-btn.delete {
@@ -425,6 +479,100 @@
             border-top: 1px solid var(--border);
             color: var(--gray);
         }
+        
+        /* Auth Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .auth-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .auth-btn.google {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .auth-btn.google:hover {
+            background: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .auth-btn.email {
+            background: #4361ee;
+            color: white;
+        }
+        
+        .auth-btn.email:hover {
+            background: #3a56d4;
+        }
+        
+        .auth-btn.phone {
+            background: #4cc9f0;
+            color: white;
+        }
+        
+        .auth-btn.phone:hover {
+            background: #3db8dd;
+        }
+        
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .user-info.show {
+            display: flex;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            color: #4361ee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .user-name {
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .logout-btn:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -435,6 +583,28 @@
             </div>
             <h1>MART img Drop</h1>
             <p class="tagline">Upload images and get base64 code for website embedding</p>
+            
+            <!-- Authentication Section -->
+            <div class="auth-buttons" id="authButtons">
+                <button class="auth-btn google" id="googleAuthBtn">
+                    <i class="fab fa-google"></i> Google
+                </button>
+                <button class="auth-btn email" id="emailAuthBtn">
+                    <i class="fas fa-envelope"></i> Email
+                </button>
+                <button class="auth-btn phone" id="phoneAuthBtn">
+                    <i class="fas fa-phone"></i> Phone
+                </button>
+            </div>
+            
+            <div class="user-info" id="userInfo">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-name" id="userName">User</div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
             <div class="stats">
                 <div class="stat-item">
                     <span class="stat-value" id="totalImages">0</span>
@@ -463,6 +633,12 @@
                         <p>Maximum file size: 5MB</p>
                     </div>
                     <input type="file" id="imageInput" accept="image/*">
+                </div>
+                
+                <!-- Rename Option -->
+                <div class="rename-option" id="renameOption">
+                    <label class="rename-label">Rename Image (optional):</label>
+                    <input type="text" class="rename-input" id="renameInput" placeholder="Enter new name without extension">
                 </div>
                 
                 <!-- Image Info -->
@@ -503,9 +679,10 @@
                 </div>
                 <div class="image-info">
                     <p>1. Upload an image</p>
-                    <p>2. Click on any image in gallery</p>
-                    <p>3. Copy the HTML code</p>
-                    <p>4. Paste into your website</p>
+                    <p>2. Rename if needed</p>
+                    <p>3. Click on any image in gallery</p>
+                    <p>4. Copy the HTML code</p>
+                    <p>5. Paste into your website</p>
                 </div>
             </div>
             
@@ -561,6 +738,23 @@
                         <span class="info-value" id="modalFileSize">-</span>
                     </div>
                     
+                    <!-- New Copy Options -->
+                    <div class="section-title" style="margin-top: 25px; margin-bottom: 15px; font-size: 1.2rem; font-weight: 600; color: var(--dark); padding-bottom: 10px; border-bottom: 2px solid var(--primary); display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-copy"></i>
+                        <span>Copy Options</span>
+                    </div>
+                    
+                    <div class="copy-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                        <button class="btn" id="modalCopyBase64Btn" style="padding: 12px 15px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; background: #fff5f5; color: #e8590c;">
+                            <i class="fas fa-code"></i>
+                            Copy Base64
+                        </button>
+                        <button class="btn" id="modalCopyLinkBtn" style="padding: 12px 15px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; background: #f8f0ff; color: #9c36b5;">
+                            <i class="fas fa-link"></i>
+                            Copy Link
+                        </button>
+                    </div>
+                    
                     <div class="section-title" style="margin-top: 25px; margin-bottom: 15px; font-size: 1.2rem; font-weight: 600; color: var(--dark); padding-bottom: 10px; border-bottom: 2px solid var(--primary); display: flex; align-items: center; gap: 10px;">
                         <i class="fas fa-code"></i>
                         <span>HTML Code for Your Website</span>
@@ -588,12 +782,29 @@
         </div>
     </div>
 
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div class="modal-content" style="background: white; border-radius: 20px; max-width: 400px; width: 100%; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+            <div class="modal-header" style="padding: 25px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="authModalTitle" style="font-size: 1.5rem; color: var(--dark);">Sign In</h3>
+                <button class="modal-close" id="authModalClose" style="background: none; border: none; font-size: 1.5rem; color: var(--gray); cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                <div id="authFormContent">
+                    <!-- Auth form will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         // Initialize variables
         let allImages = [];
         let selectedFile = null;
         let base64String = '';
+        let renameInput = '';
+        let currentUser = null;
         
         // DOM elements
         const elements = {
@@ -606,8 +817,18 @@
             totalImages: document.getElementById('totalImages'),
             totalSize: document.getElementById('totalSize'),
             imageInfo: document.getElementById('imageInfo'),
+            renameOption: document.getElementById('renameOption'),
+            renameInput: document.getElementById('renameInput'),
             imageModal: document.getElementById('imageModal'),
-            modalClose: document.getElementById('modalClose')
+            modalClose: document.getElementById('modalClose'),
+            authModal: document.getElementById('authModal'),
+            authModalClose: document.getElementById('authModalClose'),
+            authButtons: document.getElementById('authButtons'),
+            userInfo: document.getElementById('userInfo'),
+            logoutBtn: document.getElementById('logoutBtn'),
+            googleAuthBtn: document.getElementById('googleAuthBtn'),
+            emailAuthBtn: document.getElementById('emailAuthBtn'),
+            phoneAuthBtn: document.getElementById('phoneAuthBtn')
         };
         
         // Initialize the app
@@ -621,6 +842,9 @@
                 closeButton: true,
                 timeOut: 3000
             };
+            
+            // Check if user is logged in
+            checkAuthStatus();
             
             // Load images from local storage
             loadAllImages();
@@ -651,6 +875,11 @@
             
             elements.dropArea.addEventListener('drop', handleDrop);
             
+            // Rename input event
+            elements.renameInput.addEventListener('input', function() {
+                renameInput = this.value.trim();
+            });
+            
             // Button events
             elements.uploadBtn.addEventListener('click', saveImage);
             elements.clearBtn.addEventListener('click', clearSelection);
@@ -664,14 +893,27 @@
                 elements.imageModal.style.display = 'none';
             });
             
+            elements.authModalClose.addEventListener('click', () => {
+                elements.authModal.style.display = 'none';
+            });
+            
             // Close modal when clicking outside
             window.addEventListener('click', (e) => {
                 if (e.target === elements.imageModal) {
                     elements.imageModal.style.display = 'none';
                 }
+                if (e.target === elements.authModal) {
+                    elements.authModal.style.display = 'none';
+                }
             });
             
-            // Copy code button
+            // Auth events
+            elements.googleAuthBtn.addEventListener('click', () => simulateAuth('Google'));
+            elements.emailAuthBtn.addEventListener('click', () => showEmailAuthForm());
+            elements.phoneAuthBtn.addEventListener('click', () => showPhoneAuthForm());
+            elements.logoutBtn.addEventListener('click', logout);
+            
+            // Modal copy buttons
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.copy-code-btn')) {
                     const button = e.target.closest('.copy-code-btn');
@@ -679,6 +921,25 @@
                     const codeElement = document.getElementById(targetId);
                     copyToClipboard(codeElement.textContent);
                     toastr.success('HTML code copied to clipboard!');
+                }
+                
+                // Handle copy base64 button in modal
+                if (e.target.closest('#modalCopyBase64Btn')) {
+                    const currentImage = getCurrentModalImage();
+                    if (currentImage) {
+                        copyToClipboard(currentImage.base64, 'Base64 code');
+                    }
+                }
+                
+                // Handle copy link button in modal
+                if (e.target.closest('#modalCopyLinkBtn')) {
+                    const currentImage = getCurrentModalImage();
+                    if (currentImage) {
+                        // In a real app, this would be a server URL
+                        // For demo, we'll create a data URL preview
+                        const previewLink = window.location.origin + '/preview/' + currentImage.id;
+                        copyToClipboard(previewLink, 'Image preview link');
+                    }
                 }
             });
         }
@@ -723,6 +984,10 @@
             document.getElementById('fileSize').textContent = formatFileSize(file.size);
             document.getElementById('fileType').textContent = file.type;
             
+            // Show rename option
+            elements.renameOption.classList.add('show');
+            elements.renameInput.value = file.name.replace(/\.[^/.]+$/, ""); // Remove extension
+            
             // Show image info section
             elements.imageInfo.classList.add('show');
             
@@ -764,15 +1029,27 @@
             // Create a unique ID for the image
             const imageId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
             
+            // Get file extension
+            const originalName = selectedFile.name;
+            const extension = originalName.substring(originalName.lastIndexOf('.'));
+            
+            // Determine final file name
+            let finalFileName = originalName;
+            if (renameInput && renameInput.trim() !== '') {
+                finalFileName = renameInput.trim() + extension;
+            }
+            
             // Prepare the data object
             const imageData = {
                 id: imageId,
-                fileName: selectedFile.name,
+                fileName: finalFileName,
+                originalName: originalName,
                 fileType: selectedFile.type,
                 fileSize: selectedFile.size,
                 base64: base64String,
                 uploadTime: new Date().toISOString(),
-                dimensions: document.getElementById('fileDimensions').textContent
+                dimensions: document.getElementById('fileDimensions').textContent,
+                uploadedBy: currentUser ? currentUser.email : 'anonymous'
             };
             
             // Save to local storage
@@ -797,7 +1074,7 @@
                 localStorage.setItem('martImgDropImages', JSON.stringify(storedImages));
                 
                 console.log('Image saved to local storage');
-                toastr.success(`"${selectedFile.name}" saved successfully!`);
+                toastr.success(`"${imageData.fileName}" saved successfully!`);
                 
                 // Add to local array
                 allImages = storedImages;
@@ -890,8 +1167,14 @@
                         <button class="card-btn download">
                             <i class="fas fa-download"></i> Download
                         </button>
-                        <button class="card-btn copy">
-                            <i class="fas fa-copy"></i> Copy Code
+                        <button class="card-btn copy-base64">
+                            <i class="fas fa-code"></i> Base64
+                        </button>
+                        <button class="card-btn copy-link">
+                            <i class="fas fa-link"></i> Link
+                        </button>
+                        <button class="card-btn delete">
+                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </div>
                 </div>
@@ -900,11 +1183,15 @@
             // Add event listeners to card buttons
             const viewBtn = card.querySelector('.card-btn.view');
             const downloadBtn = card.querySelector('.card-btn.download');
-            const copyBtn = card.querySelector('.card-btn.copy');
+            const copyBase64Btn = card.querySelector('.card-btn.copy-base64');
+            const copyLinkBtn = card.querySelector('.card-btn.copy-link');
+            const deleteBtn = card.querySelector('.card-btn.delete');
             
             viewBtn.addEventListener('click', () => openImageModal(image));
             downloadBtn.addEventListener('click', () => downloadImage(image));
-            copyBtn.addEventListener('click', () => copyImageLink(image));
+            copyBase64Btn.addEventListener('click', () => copyImageBase64(image));
+            copyLinkBtn.addEventListener('click', () => copyImageLink(image));
+            deleteBtn.addEventListener('click', () => deleteImage(image.id));
             
             return card;
         }
@@ -926,12 +1213,22 @@
             // Update HTML code snippet
             document.getElementById('htmlCode').textContent = `<img src="${image.base64}" alt="${image.fileName}" />`;
             
+            // Store current image ID in modal for copy functions
+            elements.imageModal.dataset.currentImageId = image.id;
+            
             // Update modal button events
             document.getElementById('modalDownloadBtn').onclick = () => downloadImage(image);
             document.getElementById('modalDeleteBtn').onclick = () => deleteImage(image.id);
+            document.getElementById('modalCopyBase64Btn').onclick = () => copyImageBase64(image);
+            document.getElementById('modalCopyLinkBtn').onclick = () => copyImageLink(image);
             
             // Show modal
             elements.imageModal.style.display = 'flex';
+        }
+        
+        function getCurrentModalImage() {
+            const imageId = elements.imageModal.dataset.currentImageId;
+            return allImages.find(img => img.id === imageId);
         }
         
         function downloadImage(image) {
@@ -945,9 +1242,15 @@
             toastr.success(`Downloading "${image.fileName}"`);
         }
         
+        function copyImageBase64(image) {
+            copyToClipboard(image.base64, 'Base64 code');
+        }
+        
         function copyImageLink(image) {
-            const htmlCode = `<img src="${image.base64}" alt="${image.fileName}" />`;
-            copyToClipboard(htmlCode, 'HTML code');
+            // In a real application, this would be a server-generated URL
+            // For demo purposes, we'll create a simulated preview link
+            const previewLink = `${window.location.origin}/preview/${image.id}`;
+            copyToClipboard(previewLink, 'Image preview link');
         }
         
         function deleteImage(imageId) {
@@ -978,22 +1281,153 @@
                 })
                 .catch(err => {
                     console.error('Failed to copy: ', err);
-                    toastr.error('Failed to copy to clipboard');
+                    
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        toastr.success(`${type} copied to clipboard!`);
+                    } catch (err) {
+                        toastr.error('Failed to copy to clipboard');
+                    }
+                    document.body.removeChild(textArea);
                 });
         }
         
         function clearSelection() {
             selectedFile = null;
             base64String = '';
+            renameInput = '';
             
             // Reset UI
             elements.imageInput.value = '';
             elements.imageInfo.classList.remove('show');
+            elements.renameOption.classList.remove('show');
+            elements.renameInput.value = '';
             elements.uploadBtn.disabled = true;
             
             // Reset upload area
             elements.dropArea.style.borderColor = '#4361ee';
             elements.dropArea.style.backgroundColor = 'white';
+        }
+        
+        // Authentication Functions
+        function checkAuthStatus() {
+            const user = JSON.parse(localStorage.getItem('martImgDropUser'));
+            if (user) {
+                currentUser = user;
+                updateUIForLoggedInUser(user);
+            }
+        }
+        
+        function simulateAuth(provider) {
+            // Simulate authentication - in a real app, you would integrate with Firebase Auth or similar
+            const fakeUsers = {
+                'Google': {
+                    email: 'user@gmail.com',
+                    name: 'Google User',
+                    avatar: 'G'
+                },
+                'Email': {
+                    email: 'user@example.com',
+                    name: 'Email User',
+                    avatar: 'E'
+                },
+                'Phone': {
+                    email: '+1234567890@example.com',
+                    name: 'Phone User',
+                    avatar: 'P'
+                }
+            };
+            
+            const user = fakeUsers[provider];
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('martImgDropUser', JSON.stringify(user));
+                updateUIForLoggedInUser(user);
+                elements.authModal.style.display = 'none';
+                toastr.success(`Signed in with ${provider} successfully!`);
+            }
+        }
+        
+        function showEmailAuthForm() {
+            document.getElementById('authModalTitle').textContent = 'Sign In with Email';
+            document.getElementById('authFormContent').innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px; color: var(--gray);">Email Address</label>
+                        <input type="email" id="authEmail" style="width: 100%; padding: 12px 15px; border: 2px solid var(--border); border-radius: 10px; font-size: 0.95rem;" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px; color: var(--gray);">Password</label>
+                        <input type="password" id="authPassword" style="width: 100%; padding: 12px 15px; border: 2px solid var(--border); border-radius: 10px; font-size: 0.95rem;" placeholder="Enter your password">
+                    </div>
+                    <button id="authSubmitBtn" class="btn btn-primary" style="margin-top: 10px;">
+                        Sign In
+                    </button>
+                    <p style="text-align: center; color: var(--gray); font-size: 0.9rem; margin-top: 10px;">
+                        Don't have an account? <a href="#" style="color: var(--primary);">Sign up</a>
+                    </p>
+                </div>
+            `;
+            
+            document.getElementById('authSubmitBtn').addEventListener('click', () => {
+                const email = document.getElementById('authEmail').value;
+                const password = document.getElementById('authPassword').value;
+                
+                if (email && password) {
+                    simulateAuth('Email');
+                } else {
+                    toastr.error('Please enter email and password');
+                }
+            });
+            
+            elements.authModal.style.display = 'flex';
+        }
+        
+        function showPhoneAuthForm() {
+            document.getElementById('authModalTitle').textContent = 'Sign In with Phone';
+            document.getElementById('authFormContent').innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px; color: var(--gray);">Phone Number</label>
+                        <input type="tel" id="authPhone" style="width: 100%; padding: 12px 15px; border: 2px solid var(--border); border-radius: 10px; font-size: 0.95rem;" placeholder="+1 234 567 8900">
+                    </div>
+                    <button id="authSubmitBtn" class="btn btn-primary" style="margin-top: 10px;">
+                        Send Verification Code
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('authSubmitBtn').addEventListener('click', () => {
+                const phone = document.getElementById('authPhone').value;
+                
+                if (phone) {
+                    simulateAuth('Phone');
+                } else {
+                    toastr.error('Please enter phone number');
+                }
+            });
+            
+            elements.authModal.style.display = 'flex';
+        }
+        
+        function updateUIForLoggedInUser(user) {
+            elements.authButtons.style.display = 'none';
+            elements.userInfo.classList.add('show');
+            document.getElementById('userName').textContent = user.name || user.email;
+            document.getElementById('userAvatar').textContent = user.avatar || user.name.charAt(0).toUpperCase();
+        }
+        
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('martImgDropUser');
+            elements.authButtons.style.display = 'flex';
+            elements.userInfo.classList.remove('show');
+            toastr.info('Logged out successfully');
         }
         
         // Utility functions
